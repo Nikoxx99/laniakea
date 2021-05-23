@@ -83,7 +83,7 @@
       :absolute="!fixed"
       app
     >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <span>&copy; {{ new Date().getFullYear() }} Laniakea Video Sync | All rights reserved</span>
     </v-footer>
   </v-app>
 </template>
