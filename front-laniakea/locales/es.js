@@ -8,12 +8,23 @@ export default {
     btnHost: 'ANFITRIÓN',
     btnParticipant: 'PARTICIPANTE'
   },
+  sesion: {
+    newParticipant: 'se ha unido a la sesión'
+  },
   host: {
     title: 'Ahora estas interactuando como el anfitrión de la sesión',
     info: 'Selecciona un archivo de video para comenzar la sesión',
     fileInputTitle: 'Selecciona un video para sincronizar',
     fileInputPlaceholder: 'Video a sincronizar',
     btnBegin: 'Iniciar transmision a participantes sincronizados'
+  },
+  participant: {
+    title: 'Ahora estas interactuando como un participante de una sesión',
+    info: 'Now input the unique ID of the session you want to participate',
+    uniqueIdSelectorLabel: 'Ingresa la identificación única de la sesión',
+    fileInputTitle: 'Selecciona un video para sincronizar',
+    fileInputPlaceholder: 'Video a sincronizar',
+    btnBegin: 'Unirte a la sesión'
   },
   error: {
     index: {

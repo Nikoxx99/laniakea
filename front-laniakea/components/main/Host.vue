@@ -53,9 +53,11 @@
         width="100%"
         :src="blobUrl"
         controls
-        @timeupdate="time = $event.target.currentTime"
+        @play="ws.send('play')"
+        @pause="ws.send('pause')"
+        @seeking="time = $event.target.currentTime"
       />
-      <span>{{ time }}</span>
+      <h2 class="deep-purple--text accent-4">{{ uniqueid }}</h2>
     </v-card-text>
   </v-card>
 </template>
@@ -90,7 +92,7 @@ export default {
   },
   methods: {
     beginSession () {
-      this.ws = new WebSocket('ws://localhost:8082')
+      this.ws = new WebSocket(`ws://localhost:8082/?token=${this.uniqueid}`)
       this.ws.addEventListener('open', () => {
         console.log('Connected')
         this.ws.send('Video iniciado')

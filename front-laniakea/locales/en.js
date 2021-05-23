@@ -8,12 +8,23 @@ export default {
     btnHost: 'HOST',
     btnParticipant: 'PARTICIPANT'
   },
+  sesion: {
+    newParticipant: 'has joined the session'
+  },
   host: {
     title: 'You are now interacting as the Host of the session',
     info: 'Now select a videofile to begin with the session',
     fileInputTitle: 'Select a videofile to sync',
     fileInputPlaceholder: 'Videofile to sync',
     btnBegin: 'Begin sync transmision to participants'
+  },
+  participant: {
+    title: 'You are now interacting as a participant of a session',
+    info: 'Now input the unique ID of the session you want to participate',
+    uniqueIdSelectorLabel: 'Input the unique ID',
+    fileInputTitle: 'Select a videofile to sync',
+    fileInputPlaceholder: 'Videofile to sync',
+    btnBegin: 'Join the session'
   },
   error: {
     index: {
