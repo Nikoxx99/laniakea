@@ -10,6 +10,9 @@
           {{error.message}}
         </v-alert>
         <v-card-title class="headline justify-center">
+          <LayoutLogo />
+        </v-card-title>
+        <v-card-title class="headline justify-center">
           <h1 class="text-center">
             {{ $t('index.welcome') }}
           </h1>

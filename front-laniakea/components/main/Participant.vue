@@ -100,7 +100,6 @@ export default {
     joinSession () {
       this.ws = new WebSocket(`ws://localhost:8082/?token=${this.session.uniqueid}`)
       this.ws.addEventListener('open', () => {
-        console.log('Connected')
         this.ws.send(this.username + this.$t('sesion.newParticipant'))
       })
       this.ws.addEventListener('message', ({ data }) => {

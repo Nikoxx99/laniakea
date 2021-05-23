@@ -38,16 +38,17 @@
       <v-btn
         v-model="initialized"
         elevation="2"
-        color="deep-purple accent-4"
+        :color="started ? 'green darken-4' : 'deep-purple accent-4'"
         large
         x-large
         block
         @click="beginSession()"
       >
-        {{ $t('host.btnBegin') }}
+        {{ started ? $t('host.btnBeginStarted') : $t('host.btnBegin') }}
       </v-btn>
     </v-card-text>
-    <v-card-text>
+    <v-card-text v-if="started" class="text-center">
+      <h2 class="white--text accent-4 mb-4">{{ $t('host.codeTitle') }} <strong class="deep-purple--text">{{ uniqueid }}</strong></h2>
       <video
         ref="video"
         width="100%"
@@ -57,7 +58,6 @@
         @pause="ws.send('pause')"
         @seeking="time = $event.target.currentTime"
       />
-      <h2 class="deep-purple--text accent-4">{{ uniqueid }}</h2>
     </v-card-text>
   </v-card>
 </template>
@@ -73,8 +73,9 @@ export default {
   },
   data () {
     return {
-      video: [],
+      video: null,
       initialized: false,
+      started: false,
       uniqueid: '',
       blobUrl: '',
       time: 0,
@@ -92,13 +93,10 @@ export default {
   },
   methods: {
     beginSession () {
+      this.started = true
       this.ws = new WebSocket(`ws://localhost:8082/?token=${this.uniqueid}`)
       this.ws.addEventListener('open', () => {
-        console.log('Connected')
         this.ws.send('Video iniciado')
-      })
-      this.ws.addEventListener('message', (e) => {
-        console.log(e)
       })
       this.blobUrl = window.URL.createObjectURL(this.video)
     },

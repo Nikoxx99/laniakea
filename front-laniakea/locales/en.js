@@ -16,7 +16,9 @@ export default {
     info: 'Now select a videofile to begin with the session',
     fileInputTitle: 'Select a videofile to sync',
     fileInputPlaceholder: 'Videofile to sync',
-    btnBegin: 'Begin sync transmision to participants'
+    btnBegin: 'Begin sync transmision to participants',
+    btnBeginStarted: 'Session has begun',
+    codeTitle: 'Session code: '
   },
   participant: {
     title: 'You are now interacting as a participant of a session',

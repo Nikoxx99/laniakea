@@ -16,11 +16,13 @@ export default {
     info: 'Selecciona un archivo de video para comenzar la sesión',
     fileInputTitle: 'Selecciona un video para sincronizar',
     fileInputPlaceholder: 'Video a sincronizar',
-    btnBegin: 'Iniciar transmision a participantes sincronizados'
+    btnBegin: 'Iniciar transmision a participantes sincronizados',
+    btnBeginStarted: 'La sesión ha iniciado',
+    codeTitle: 'Codigo de la sesión: '
   },
   participant: {
     title: 'Ahora estas interactuando como un participante de una sesión',
-    info: 'Now input the unique ID of the session you want to participate',
+    info: 'Ahora ingresa el codigo único de la sesion para empezar',
     uniqueIdSelectorLabel: 'Ingresa la identificación única de la sesión',
     fileInputTitle: 'Selecciona un video para sincronizar',
     fileInputPlaceholder: 'Video a sincronizar',
