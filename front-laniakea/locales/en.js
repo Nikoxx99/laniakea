@@ -7,5 +7,17 @@ export default {
     subtitle: 'Please choose your role in this session',
     btnHost: 'HOST',
     btnParticipant: 'PARTICIPANT'
+  },
+  host: {
+    title: 'You are now interacting as the Host of the session',
+    info: 'Now select a videofile to begin with the session',
+    fileInputTitle: 'Select a videofile to sync',
+    fileInputPlaceholder: 'Videofile to sync',
+    btnBegin: 'Begin sync transmision to participants'
+  },
+  error: {
+    index: {
+      usernameNotDefined: 'You must have an username!'
+    }
   }
 }
