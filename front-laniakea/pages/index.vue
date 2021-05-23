@@ -85,17 +85,6 @@ export default {
       }
     }
   },
-  mounted () {
-    const ws = new WebSocket('ws://localhost:8082')
-    ws.addEventListener('open', () => {
-      console.log('Connected')
-
-      ws.send('Wasapppppp')
-    })
-    ws.addEventListener('message', (e) => {
-      console.log(e)
-    })
-  },
   methods: {
     switchToRoleHost () {
       this.error.status = false

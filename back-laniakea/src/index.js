@@ -6,7 +6,7 @@ wss.on("connection", ws => {
   console.log("New connection")
 
   ws.on("message", data => {
-    console.log(`Client send: ${data}`)
+    console.log(data)
 
     ws.send(data.toUpperCase())
   })
