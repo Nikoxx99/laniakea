@@ -1,6 +1,7 @@
 // en-US.js with English translations
 export default {
   index: {
+    tabInfo: 'Watch videos in sync with friends',
     welcome: 'Welcome to Laniakea',
     nameSelector: 'Choose your name please',
     nameSelectorLabel: 'Input your name',
