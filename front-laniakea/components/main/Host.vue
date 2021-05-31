@@ -84,7 +84,7 @@
         @seeking="sendWS('seekTo', $event.target.currentTime)"
       />
       <MainChat
-        :uniqueid="this.uniqueid"
+        :uniqueid="uniqueid"
         :chatMessages="chatMessages"
         @newChatMessage="sendWS('chat', $event, username)"
       />
@@ -152,7 +152,6 @@ export default {
             this.chatMessages.unshift(action)
             break
           case 'info':
-            console.log(action.payload)
             break
         }
       })

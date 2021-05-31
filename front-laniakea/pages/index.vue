@@ -93,32 +93,6 @@ export default {
       }
     }
   },
-  methods: {
-    switchToRoleHost () {
-      this.session.isInitialized = true
-      this.error.status = false
-      this.error.message = ''
-      if (this.user.name) {
-        this.user.isHost = true
-        this.user.isParticipant = false
-      } else {
-        this.error.status = true
-        this.error.message = this.$t('error.index.usernameNotDefined')
-      }
-    },
-    switchToRoleParticipant () {
-      this.session.isInitialized = true
-      this.error.status = false
-      this.error.message = ''
-      if (this.user.name) {
-        this.user.isHost = false
-        this.user.isParticipant = true
-      } else {
-        this.error.status = true
-        this.error.message = this.$t('error.index.usernameNotDefined')
-      }
-    }
-  },
   head () {
     return {
       title: 'Laniakea - ' + this.$t('index.tabInfo'),
@@ -143,6 +117,32 @@ export default {
         { hid: 'og:image', property: 'og:image', content: 'https://laniakea.live/favicon.jpg' },
         { hid: 'author', name: 'author', content: 'laniakea' }
       ]
+    }
+  },
+  methods: {
+    switchToRoleHost () {
+      this.session.isInitialized = true
+      this.error.status = false
+      this.error.message = ''
+      if (this.user.name) {
+        this.user.isHost = true
+        this.user.isParticipant = false
+      } else {
+        this.error.status = true
+        this.error.message = this.$t('error.index.usernameNotDefined')
+      }
+    },
+    switchToRoleParticipant () {
+      this.session.isInitialized = true
+      this.error.status = false
+      this.error.message = ''
+      if (this.user.name) {
+        this.user.isHost = false
+        this.user.isParticipant = true
+      } else {
+        this.error.status = true
+        this.error.message = this.$t('error.index.usernameNotDefined')
+      }
     }
   }
 }

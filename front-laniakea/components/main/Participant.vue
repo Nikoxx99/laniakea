@@ -92,7 +92,7 @@
         :current-time.prop="time"
       />
       <MainChat
-        :uniqueid="this.session.uniqueid"
+        :uniqueid="session.uniqueid"
         :chatMessages="chatMessages"
         @newChatMessage="sendWS('chat', $event, username)"
       />
