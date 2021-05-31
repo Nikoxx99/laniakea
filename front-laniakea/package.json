@@ -16,13 +16,16 @@
     "js-cookie": "^2.2.1",
     "nanoid": "^3.1.23",
     "nuxt": "^2.15.3",
-    "nuxt-i18n": "^6.27.0"
+    "nuxt-i18n": "^6.27.0",
+    "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/eslint-config": "^6.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/vuetify": "^1.11.3",
     "babel-eslint": "^10.1.0",
+    "sass": "~1.32.12",
     "eslint": "^7.22.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-vue": "^7.7.0",

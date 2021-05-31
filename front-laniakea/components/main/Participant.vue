@@ -1,16 +1,37 @@
 <template>
-  <v-card class="mt-5">
-    <v-card-title>
-      <h3>
-        {{ $t('participant.title') }} <strong>{{ username }}</strong>
-      </h3>
+  <v-card :class="initialized ? '' : 'mt-5'">
+    <v-card-title
+      v-if="!initialized"
+    >
+      <v-alert
+        text
+        dense
+        color="teal"
+        icon="mdi-check"
+        border="left"
+      >
+        <h3>
+          {{ $t('participant.title') }} <strong>{{ username }}</strong>
+        </h3>
+      </v-alert>
+      <v-spacer />
+      <v-btn
+        color="red darken-1"
+        class="ma-2 white--text"
+        @click="$emit('changeRole')"
+      >
+        {{ $t('session.switchRoleBtn') }}
+        <v-icon
+          right
+        >
+          mdi-close
+        </v-icon>
+      </v-btn>
     </v-card-title>
-    <v-card-text>
+    <v-card-text v-if="!initialized">
       <p>
         {{ $t('participant.info') }}
       </p>
-    </v-card-text>
-    <v-card-text>
       <v-text-field
         v-model="session.uniqueid"
         style="max-width:50%;margin-left:auto;margin-right:auto;"
@@ -20,7 +41,9 @@
         outlined
       />
     </v-card-text>
-    <v-card-text>
+    <v-card-text
+      v-if="!initialized"
+    >
       <v-file-input
         v-model="video"
         color="deep-purple accent-4"
@@ -31,7 +54,7 @@
         outlined
         :show-size="1000"
       >
-        <template v-slot:selection="{ text }">
+        <template #selection="{ text }">
           <v-chip
             color="deep-purple accent-4"
             dark
@@ -43,32 +66,42 @@
         </template>
       </v-file-input>
     </v-card-text>
-    <v-card-text v-if="video">
+    <v-card-text v-if="!initialized">
       <v-btn
         v-model="initialized"
         elevation="2"
-        color="deep-purple accent-4"
+        :color="initialized ? 'green darken-4' : 'deep-purple accent-4'"
         large
         x-large
         block
         @click="joinSession()"
       >
-        {{ $t('participant.btnBegin') }}
+        {{ initialized ? $t('participant.btnBeginStarted') : $t('participant.btnBegin') }}
       </v-btn>
     </v-card-text>
-    <v-card-text>
+    <v-card-text
+      v-if="initialized"
+      class="text-left px-0 pb-0 d-flex"
+      style="height:100vh"
+    >
       <video
         ref="video"
         controls
-        width="100%"
+        style="width:100%"
         :src="blobUrl"
         :current-time.prop="time"
+      />
+      <MainChat
+        :uniqueid="this.session.uniqueid"
+        :chatMessages="chatMessages"
+        @newChatMessage="sendWS('chat', $event, username)"
       />
     </v-card-text>
   </v-card>
 </template>
 
 <script>
+import { io } from 'socket.io-client'
 export default {
   props: {
     username: {
@@ -84,34 +117,44 @@ export default {
       session: {
         uniqueid: null
       },
-      blobUrl: null
-    }
-  },
-  watch: {
-    time (time) {
-      if (Math.abs(time - this.$refs.video.currentTime) > 0.5) {
-        this.$refs.video.currentTime = time
-      }
-      this.ws.send(this.time)
-      console.log(this.time)
+      blobUrl: null,
+      chatMessages: [],
+      socket: null
     }
   },
   methods: {
     joinSession () {
-      this.ws = new WebSocket(`ws://localhost:8082/?token=${this.session.uniqueid}`)
-      this.ws.addEventListener('open', () => {
-        this.ws.send(this.username + this.$t('sesion.newParticipant'))
+      this.initialized = true
+      this.socket = io(process.env.wsURI)
+      this.socket.emit('joinRoom', this.session.uniqueid)
+      this.sendWS('join', this.username + ' ' + this.$t('session.newParticipant'), 'Info')
+      this.socket.on('play', () => {
+        this.$refs.video.play()
       })
-      this.ws.addEventListener('message', ({ data }) => {
-        if (data === 'play') {
-          this.$refs.video.play()
-        } else if (data === 'pause') {
-          this.$refs.video.pause()
-        } else {
-          this.time = data
-        }
+      this.socket.on('pause', () => {
+        this.$refs.video.pause()
+      })
+      this.socket.on('seekTo', (timeData) => {
+        const time = JSON.parse(timeData)
+        this.time = time.payload
+      })
+      this.socket.on('message', (data) => {
+        const action = JSON.parse(data)
+        this.chatMessages.unshift(action)
       })
       this.blobUrl = window.URL.createObjectURL(this.video)
+    },
+    sendWS (type, payload, user) {
+      const msg = {
+        type: null,
+        payload: null,
+        user: null,
+        date: Date.now()
+      }
+      msg.type = type
+      msg.payload = payload
+      msg.user = user
+      this.socket.emit(type, JSON.stringify(msg))
     }
   }
 }
@@ -120,8 +163,6 @@ export default {
 <style scoped>
   audio::-webkit-media-controls-timeline,
   video::-webkit-media-controls-play-button,
-  video::-webkit-media-controls-current-time-display,
-  video::-webkit-media-controls-time-remaining-display,
   video::-webkit-media-controls-timeline {
       display: none;
   }

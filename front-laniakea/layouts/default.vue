@@ -1,16 +1,16 @@
 <template>
   <v-app dark>
     <v-main>
-      <v-container>
+      <v-container fluid>
         <nuxt />
       </v-container>
     </v-main>
-    <v-footer
+    <!-- <v-footer
       :absolute="!fixed"
       app
     >
       <span>&copy; {{ new Date().getFullYear() }} Laniakea Video Sync | All rights reserved</span>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 

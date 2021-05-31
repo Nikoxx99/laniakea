@@ -1,15 +1,28 @@
-const WebSocket = require("ws")
+require('dotenv').config()
 
-const wss = new WebSocket.Server({ port: 8082 })
-const lookup = {}
-wss.on("connection", (ws, req) => {
-  ws.id = req.url.replace('/?token=', '')
-  lookup[ws.id] = ws;
-  ws.on("message",function message(msg){
-    lookup[ws.id].send(msg)
+const io = require("socket.io")(8082, {cors: {
+  origin: process.env.CLIENT_URI,
+  methods: ["GET", "POST"]
+}})
+var rooms = {}
+io.on('connection', socket => {
+  socket.on('joinRoom', room => {
+    socket.join(room);
+    rooms[socket.id] = room
   })
-
-  ws.on("close", () => {
-    console.log("Disconnected")
+  socket.on('join', message => {
+    io.to(rooms[socket.id]).emit('join', message)
+  })
+  socket.on('chat', message => {
+    io.to(rooms[socket.id]).emit('message', message)
+  })
+  socket.on('play', () => {
+    io.to(rooms[socket.id]).emit('play')
+  })
+  socket.on('pause', () => {
+    io.to(rooms[socket.id]).emit('pause')
+  })
+  socket.on('seekTo', time => {
+    io.to(rooms[socket.id]).emit('seekTo', time)
   })
 })

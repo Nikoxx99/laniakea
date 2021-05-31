@@ -8,8 +8,16 @@ export default {
     btnHost: 'HOST',
     btnParticipant: 'PARTICIPANT'
   },
-  sesion: {
-    newParticipant: 'has joined the session'
+  session: {
+    newParticipant: 'has joined the session',
+    switchRoleBtn: 'Change Role',
+    closeSessionBtn: 'Close session'
+  },
+  chat: {
+    chatBox: {
+      label: 'Start to write',
+      placeholder: 'Another april without her...'
+    }
   },
   host: {
     title: 'You are now interacting as the Host of the session',
@@ -26,7 +34,8 @@ export default {
     uniqueIdSelectorLabel: 'Input the unique ID',
     fileInputTitle: 'Select a videofile to sync',
     fileInputPlaceholder: 'Videofile to sync',
-    btnBegin: 'Join the session'
+    btnBegin: 'Join the session',
+    btnBeginStarted: 'Session joined successful'
   },
   error: {
     index: {

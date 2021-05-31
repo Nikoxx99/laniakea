@@ -36,6 +36,7 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    '@nuxtjs/dotenv',
     'nuxt-build-optimisations',
   ],
   buildOptimisations: {
@@ -85,5 +86,10 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    extend(config, {}) {
+      config.node = {
+          fs: 'empty'
+      }
+  }
   }
 }

@@ -9,7 +9,15 @@ export default {
     btnParticipant: 'PARTICIPANTE'
   },
   sesion: {
-    newParticipant: 'se ha unido a la sesión'
+    newParticipant: 'se ha unido a la sesión',
+    switchRoleBtn: 'Change Role',
+    closeSessionBtn: 'Cerrar sesión'
+  },
+  chat: {
+    chatBox: {
+      label: 'Empieza a escribir',
+      placeholder: 'Otro abril sin ella...'
+    }
   },
   host: {
     title: 'Ahora estas interactuando como el anfitrión de la sesión',
@@ -26,7 +34,8 @@ export default {
     uniqueIdSelectorLabel: 'Ingresa la identificación única de la sesión',
     fileInputTitle: 'Selecciona un video para sincronizar',
     fileInputPlaceholder: 'Video a sincronizar',
-    btnBegin: 'Unirte a la sesión'
+    btnBegin: 'Unirte a la sesión',
+    btnBeginStarted: 'Te has unido a la sesión'
   },
   error: {
     index: {

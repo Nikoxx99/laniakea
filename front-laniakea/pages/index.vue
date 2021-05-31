@@ -1,13 +1,13 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="12" sm="12" md="12">
-      <v-card>
+    <v-col cols="12" sm="12" md="12" class="py-0 px-0">
+      <v-card v-if="!session.isInitialized">
         <v-alert
           v-if="error.status"
           dense
           type="error"
         >
-          {{error.message}}
+          {{ error.message }}
         </v-alert>
         <v-card-title class="headline justify-center">
           <LayoutLogo />
@@ -63,10 +63,12 @@
       <MainHost
         v-if="user.isHost"
         :username="user.name"
+        @changeRole="user.isHost = false, session.isInitialized = false"
       />
       <MainParticipant
         v-if="user.isParticipant"
         :username="user.name"
+        @changeRole="user.isParticipant = false, session.isInitialized = false"
       />
     </v-col>
   </v-row>
@@ -85,11 +87,15 @@ export default {
         name: '',
         isHost: false,
         isParticipant: false
+      },
+      session: {
+        isInitialized: false
       }
     }
   },
   methods: {
     switchToRoleHost () {
+      this.session.isInitialized = true
       this.error.status = false
       this.error.message = ''
       if (this.user.name) {
@@ -101,6 +107,7 @@ export default {
       }
     },
     switchToRoleParticipant () {
+      this.session.isInitialized = true
       this.error.status = false
       this.error.message = ''
       if (this.user.name) {
