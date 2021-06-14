@@ -87,7 +87,7 @@
       <video
         ref="video"
         controls
-        style="width:100%"
+        style="width:85%;min-width:300px;"
         :src="blobUrl"
         :current-time.prop="time"
       />

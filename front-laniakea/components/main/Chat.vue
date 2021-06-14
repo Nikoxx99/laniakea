@@ -25,7 +25,7 @@
         :placeholder="$t('chat.chatBox.placeholder')"
         outlined
         hide-details
-        :autocomplete="false"
+        autocomplete="off"
         @keydown.enter="sendChat()"
       />
     </v-card-text>

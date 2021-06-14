@@ -76,7 +76,7 @@
     <v-card-text v-if="started" class="text-left px-0 pb-0 d-flex" style="height:100vh">
       <video
         ref="video"
-        style="width:100%"
+        style="width:85%;min-width:300px;"
         :src="blobUrl"
         controls
         @play="sendWS('play',)"

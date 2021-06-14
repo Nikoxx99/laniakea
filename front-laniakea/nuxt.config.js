@@ -40,7 +40,7 @@ export default {
     'nuxt-build-optimisations',
   ],
   buildOptimisations: {
-    profile: 'risky'
+    profile: 'experimental'
   },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
