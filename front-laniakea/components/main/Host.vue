@@ -74,18 +74,31 @@
       </h2>
     </v-card-text>
     <v-card-text v-if="started" class="text-left px-0 pb-0 d-flex" style="height:100vh">
-      <video
-        ref="video"
+      <div
         style="width:85%;min-width:300px;"
-        :src="blobUrl"
-        controls
-        @play="sendWS('play',)"
-        @pause="sendWS('pause')"
-        @seeking="sendWS('seekTo', $event.target.currentTime)"
-      />
+      >
+        <vue-plyr>
+          <video
+            id="player"
+            ref="video"
+            playsinline
+            controls
+            style="--plyr-color-main: #9c27b0;"
+            @play="sendWS('play',)"
+            @pause="sendWS('pause')"
+            @seeking="sendWS('seekTo', $event.target.currentTime)"
+          >
+            <source
+              :src="blobUrl"
+              type="video/mp4"
+            >
+          </video>
+        </vue-plyr>
+      </div>
       <MainChat
         :uniqueid="uniqueid"
         :chatMessages="chatMessages"
+        @closeSession="closeSession()"
         @newChatMessage="sendWS('chat', $event, username)"
       />
     </v-card-text>
@@ -123,6 +136,11 @@ export default {
       this.ws.send(this.time)
     }
   },
+  destroyed () {
+    if (this.socket) {
+      this.socket.emit('bye', this.username)
+    }
+  },
   methods: {
     sendWS (type, payload, user) {
       const msg = {
@@ -157,6 +175,15 @@ export default {
       })
       this.sendWS('info', 'Video iniciado')
       this.blobUrl = window.URL.createObjectURL(this.video)
+    },
+    closeSession () {
+      this.sendWS('bye', this.username + ' ' + this.$t('session.participantLeft'), 'Info')
+      this.socket.disconnect()
+      this.started = false
+      this.initialized = false
+      this.uniqueid = ''
+      this.blobUrl = ''
+      this.time = 0
     },
     generateUniqueId () {
       this.uniqueid = nanoid()

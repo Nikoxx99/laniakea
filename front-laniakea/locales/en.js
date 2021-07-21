@@ -11,6 +11,7 @@ export default {
   },
   session: {
     newParticipant: 'has joined the session',
+    participantLeft: 'has left the session',
     switchRoleBtn: 'Change Role',
     closeSessionBtn: 'Close session'
   },

@@ -84,16 +84,26 @@
       class="text-left px-0 pb-0 d-flex"
       style="height:100vh"
     >
-      <video
-        ref="video"
-        controls
+      <div
         style="width:85%;min-width:300px;"
-        :src="blobUrl"
-        :current-time.prop="time"
-      />
+      >
+        <vue-plyr :options="options">
+          <video
+            ref="video"
+            style="--plyr-color-main: #9c27b0;"
+            :current-time.prop="time"
+          >
+            <source
+              :src="blobUrl"
+              type="video/mp4"
+            >
+          </video>
+        </vue-plyr>
+      </div>
       <MainChat
         :uniqueid="session.uniqueid"
         :chatMessages="chatMessages"
+        @closeSession="closeSession()"
         @newChatMessage="sendWS('chat', $event, username)"
       />
     </v-card-text>
@@ -119,7 +129,10 @@ export default {
       },
       blobUrl: null,
       chatMessages: [],
-      socket: null
+      socket: null,
+      options: {
+        controls: ['current-time', 'volume', 'fullscreen']
+      }
     }
   },
   methods: {
@@ -144,6 +157,15 @@ export default {
       })
       this.blobUrl = window.URL.createObjectURL(this.video)
     },
+    closeSession () {
+      this.sendWS('bye', this.username + ' ' + this.$t('session.participantLeft'), 'Info')
+      this.socket.disconnect()
+      this.started = false
+      this.initialized = false
+      this.uniqueid = ''
+      this.blobUrl = ''
+      this.time = 0
+    },
     sendWS (type, payload, user) {
       const msg = {
         type: null,
@@ -165,5 +187,9 @@ export default {
   video::-webkit-media-controls-play-button,
   video::-webkit-media-controls-timeline {
       display: none;
+  }
+  .plyr__progress,
+  button[aria-label="Play"]{
+    display: none !important;
   }
 </style>

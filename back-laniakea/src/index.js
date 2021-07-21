@@ -13,6 +13,9 @@ io.on('connection', socket => {
   socket.on('join', message => {
     io.to(rooms[socket.id]).emit('join', message)
   })
+  socket.on('bye', message => {
+    io.to(rooms[socket.id]).emit('join', message)
+  })
   socket.on('chat', message => {
     io.to(rooms[socket.id]).emit('message', message)
   })

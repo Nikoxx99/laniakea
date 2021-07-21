@@ -1,7 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  components: true,
   server: {
     port: 8000 // default: 3000
   },
@@ -25,6 +24,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~/plugins/vue-plyr', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -37,7 +37,7 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/dotenv',
-    'nuxt-build-optimisations',
+    'nuxt-build-optimisations'
   ],
   buildOptimisations: {
     profile: 'experimental'
@@ -86,10 +86,10 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    extend(config, {}) {
+    extend (config) {
       config.node = {
-          fs: 'empty'
+        fs: 'empty'
       }
-  }
+    }
   }
 }

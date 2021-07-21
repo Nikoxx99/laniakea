@@ -11,6 +11,7 @@ export default {
   },
   sesion: {
     newParticipant: 'se ha unido a la sesión',
+    participantLeft: 'ha salido de la sesión uwu',
     switchRoleBtn: 'Change Role',
     closeSessionBtn: 'Cerrar sesión'
   },
