@@ -37,11 +37,13 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/dotenv',
-    ['@nuxtjs/google-analytics', {
-      id: 'G-HLP3TR31KJ'
-    }],
+    '@nuxtjs/google-analytics',
     'nuxt-build-optimisations'
   ],
+  googleAnalytics: {
+    id: 'G-HLP3TR31KJ'
+  },
+
   buildOptimisations: {
     profile: 'experimental'
   },
