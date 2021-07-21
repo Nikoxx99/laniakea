@@ -37,6 +37,7 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/dotenv',
+    '@nuxtjs/google-analytics',
     'nuxt-build-optimisations'
   ],
   buildOptimisations: {
@@ -48,6 +49,10 @@ export default {
     'nuxt-i18n',
     '@nuxtjs/pwa'
   ],
+
+  googleAnalytics: {
+    id: 'G-HLP3TR31KJ'
+  },
 
   i18n: {
     locales: [

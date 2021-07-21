@@ -1,77 +1,89 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="12" md="12" class="py-0 px-0">
-      <v-card v-if="!session.isInitialized">
-        <v-alert
-          v-if="error.status"
-          dense
-          type="error"
-        >
-          {{ error.message }}
-        </v-alert>
-        <v-card-title class="headline justify-center">
-          <LayoutLogo />
-        </v-card-title>
-        <v-card-title class="headline justify-center">
-          <h1 class="text-center">
-            {{ $t('index.welcome') }}
-          </h1>
-        </v-card-title>
-        <v-card-text class="text-center">
-          <h3>
-            {{ $t('index.nameSelector') }}
-          </h3>
-        </v-card-text>
-        <v-card-text class="text-center">
-          <v-text-field
-            v-model="user.name"
-            style="max-width:50%;margin-left:auto;margin-right:auto;"
-            class="justify-self-center"
-            :label="$t('index.nameSelectorLabel')"
-            hide-details
-            outlined
-          />
-        </v-card-text>
-        <v-card-text class="text-center">
-          <h3>
-            {{ $t('index.subtitle') }}
-          </h3>
-        </v-card-text>
-        <v-card-text class="text-center">
-          <v-btn
-            v-model="user.isHost"
-            elevation="2"
-            color="red darken-4"
-            large
-            x-large
-            @click="switchToRoleHost()"
+  <div>
+    <v-row justify="center" align="center">
+      <v-col cols="12" sm="12" md="12" class="py-0 px-0">
+        <v-card v-if="!session.isInitialized">
+          <v-alert
+            v-if="error.status"
+            dense
+            type="error"
           >
-            {{ $t('index.btnHost') }}
-          </v-btn>
-          <v-btn
-            v-model="user.isParticipant"
-            elevation="2"
-            color="blue darken-4"
-            large
-            x-large
-            @click="switchToRoleParticipant()"
-          >
-            {{ $t('index.btnParticipant') }}
-          </v-btn>
-        </v-card-text>
-      </v-card>
-      <MainHost
-        v-if="user.isHost"
-        :username="user.name"
-        @changeRole="user.isHost = false, session.isInitialized = false"
-      />
-      <MainParticipant
-        v-if="user.isParticipant"
-        :username="user.name"
-        @changeRole="user.isParticipant = false, session.isInitialized = false"
-      />
-    </v-col>
-  </v-row>
+            {{ error.message }}
+          </v-alert>
+          <v-card-title class="headline justify-center">
+            <LayoutLogo />
+          </v-card-title>
+          <v-card-title class="headline justify-center">
+            <h1 class="text-center">
+              {{ $t('index.welcome') }}
+            </h1>
+          </v-card-title>
+          <v-card-text class="text-center">
+            <h3>
+              {{ $t('index.nameSelector') }}
+            </h3>
+          </v-card-text>
+          <v-card-text class="text-center">
+            <v-text-field
+              v-model="user.name"
+              style="max-width:50%;margin-left:auto;margin-right:auto;"
+              class="justify-self-center"
+              :label="$t('index.nameSelectorLabel')"
+              hide-details
+              outlined
+            />
+          </v-card-text>
+          <v-card-text class="text-center">
+            <h3>
+              {{ $t('index.subtitle') }}
+            </h3>
+          </v-card-text>
+          <v-card-text class="text-center">
+            <v-btn
+              v-model="user.isHost"
+              elevation="2"
+              color="red darken-4"
+              large
+              x-large
+              @click="switchToRoleHost()"
+            >
+              {{ $t('index.btnHost') }}
+            </v-btn>
+            <v-btn
+              v-model="user.isParticipant"
+              elevation="2"
+              color="blue darken-4"
+              large
+              x-large
+              @click="switchToRoleParticipant()"
+            >
+              {{ $t('index.btnParticipant') }}
+            </v-btn>
+          </v-card-text>
+        </v-card>
+        <MainHost
+          v-if="user.isHost"
+          :username="user.name"
+          @changeRole="user.isHost = false, session.isInitialized = false"
+        />
+        <MainParticipant
+          v-if="user.isParticipant"
+          :username="user.name"
+          @changeRole="user.isParticipant = false, session.isInitialized = false"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="text-center">
+        <h1>Sugerencias</h1>
+      </v-col>
+    </v-row>
+    <v-row class="justify-center">
+      <v-col cols="8">
+        <div id="disqus_thread" />
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
