@@ -1,8 +1,38 @@
 // es-ES.js with Spanish translations
 export default {
+  auth: {
+    registerTitle: 'Registra una cuenta nueva',
+    email: 'Correo Electrónico',
+    emailHint: 'Por favor ingresa tu email.',
+    password: 'Contraseña',
+    passwordHint: 'Por favor ingresa tu contraseña.',
+    confirmPassword: 'Confirmar contraseña',
+    confirmPasswordHint: 'Por favor ingresa tu contraseña de nuevo.',
+    registerButton: 'Registrarte',
+    registerCancel: 'Volver al inicio',
+    loginOnRegisterPage: 'Ingresa',
+    info: {
+      alreadyAccount: '¿Ya tienes una cuenta?',
+      registerOptions: 'Ingresa para participar en sesiones de visualizado'
+    }
+  },
+  login: {
+    title: 'Ingresa a tu cuenta Laniakea',
+    username: 'Usuario',
+    usernameHint: 'Ingresa tu nombre de usuario',
+    password: 'Contraseña',
+    passwordHint: 'Por favor ingresa tu contraseña.',
+    loginButton: 'Ingresa',
+    registerOnLoginPage: 'Registrate',
+    error: 'Invalid credentials.',
+    info: {
+      alreadyAccount: '¿No tienes una cuenta?',
+      registerOptions: 'Registrate para participar en sesiones con tus amigos'
+    }
+  },
   index: {
     tabInfo: 'Mira videos en sincronia con tus amigos',
-    welcome: 'Bienvenido a Laniakea',
+    welcome: 'Bienvenido ',
     nameSelector: 'Por favor ingresa tu nombre',
     nameSelectorLabel: 'Ingresa tu nombre',
     subtitle: 'Por favor selecciona tu rol en esta sesión',
@@ -10,6 +40,7 @@ export default {
     btnParticipant: 'PARTICIPANTE'
   },
   sesion: {
+    welcome: 'Bienvenido a la sesion ',
     newParticipant: 'se ha unido a la sesión',
     participantLeft: 'ha salido de la sesión uwu',
     switchRoleBtn: 'Change Role',

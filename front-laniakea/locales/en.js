@@ -1,8 +1,38 @@
 // en-US.js with English translations
 export default {
+  auth: {
+    registerTitle: 'Register a new account',
+    email: 'Email',
+    emailHint: 'Please enter you email',
+    password: 'Password',
+    passwordHint: 'Please enter your password',
+    confirmPassword: 'Confirm password',
+    confirmPasswordHint: 'Please confirm your password',
+    registerButton: 'Register',
+    registerCancel: 'Back to home',
+    loginOnRegisterPage: 'Login',
+    info: {
+      alreadyAccount: '¿Already have an account?',
+      registerOptions: 'Login to participate in visualization sessions'
+    }
+  },
+  login: {
+    title: 'Log into your account',
+    username: 'Username',
+    usernameHint: 'Enter your username',
+    password: 'Password',
+    passwordHint: 'Enter your password',
+    loginButton: 'Login',
+    registerOnLoginPage: 'Register',
+    error: 'Invalid credentials.',
+    info: {
+      alreadyAccount: '¿Not have an account?',
+      registerOptions: 'Register an account to join your friends'
+    }
+  },
   index: {
     tabInfo: 'Watch videos in sync with friends',
-    welcome: 'Welcome to Laniakea',
+    welcome: 'Welcome ',
     nameSelector: 'Choose your name please',
     nameSelectorLabel: 'Input your name',
     subtitle: 'Please choose your role in this session',
@@ -10,6 +40,7 @@ export default {
     btnParticipant: 'PARTICIPANT'
   },
   session: {
+    welcome: 'Welcome to the session ',
     newParticipant: 'has joined the session',
     participantLeft: 'has left the session',
     switchRoleBtn: 'Change Role',

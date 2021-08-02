@@ -37,9 +37,16 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/dotenv',
+    '@nuxtjs/strapi',
     '@nuxtjs/google-analytics',
     'nuxt-build-optimisations'
   ],
+  strapi: {
+    url: process.env.API_STRAPI_ENDPOINT,
+    key: 'authToken',
+    expires: '7d',
+    entities: ['tickets']
+  },
   googleAnalytics: {
     id: 'G-HLP3TR31KJ'
   },

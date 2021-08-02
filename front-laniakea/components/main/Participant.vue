@@ -102,7 +102,8 @@
       </div>
       <MainChat
         :uniqueid="session.uniqueid"
-        :chatMessages="chatMessages"
+        :chatmessages="chatMessages"
+        :onlineusers="onlineUsers"
         @closeSession="closeSession()"
         @newChatMessage="sendWS('chat', $event, username)"
       />
@@ -132,15 +133,21 @@ export default {
       socket: null,
       options: {
         controls: ['current-time', 'volume', 'fullscreen']
-      }
+      },
+      onlineUsers: []
     }
   },
   methods: {
     joinSession () {
+      this.$emit('runningSession', true)
       this.initialized = true
-      this.socket = io(process.env.wsURI)
+      this.socket = io(process.env.wsURI, { auth: { username: this.username } })
       this.socket.emit('joinRoom', this.session.uniqueid)
+      this.chatMessages.unshift({ payload: this.$t('session.welcome') + this.username, type: 'chat', user: 'Info' })
       this.sendWS('join', this.username + ' ' + this.$t('session.newParticipant'), 'Info')
+      this.socket.on('newMember', (data) => {
+        this.onlineUsers = data
+      })
       this.socket.on('play', () => {
         this.$refs.video.play()
       })
@@ -158,6 +165,7 @@ export default {
       this.blobUrl = window.URL.createObjectURL(this.video)
     },
     closeSession () {
+      this.$emit('runningSession', false)
       this.sendWS('bye', this.username + ' ' + this.$t('session.participantLeft'), 'Info')
       this.socket.disconnect()
       this.started = false

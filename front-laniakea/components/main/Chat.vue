@@ -6,10 +6,15 @@
       {{ $t('host.codeTitle') }} <strong class="purple--text">{{ uniqueid }}</strong>
     </v-card-text>
     <v-card-text
+      class="py-0"
+    >
+      <span v-for="user in onlineusers" :key="user.id"> {{ user.username }} </span>
+    </v-card-text>
+    <v-card-text
       style="height:100px;overflow-y:scroll;display:flex;flex-direction:column-reverse;flex: 1 1 auto;"
     >
       <p
-        v-for="chatMessage in chatMessages"
+        v-for="chatMessage in chatmessages"
         :key="chatMessage.date"
       >
         <strong>{{ chatMessage.user }}: </strong>{{ chatMessage.payload }}
@@ -54,7 +59,11 @@
 export default {
   name: 'Chat',
   props: {
-    chatMessages: {
+    chatmessages: {
+      type: Array,
+      default: () => []
+    },
+    onlineusers: {
       type: Array,
       default: () => []
     },
