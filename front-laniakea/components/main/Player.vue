@@ -79,10 +79,10 @@
             block
             @click="beginSession()"
           >
-            {{ started ? $t('host.btnBeginStarted') : $t('host.btnBegin') }}
+            {{ started ? role === 'host' ? $t('host.btnBeginStarted') : $t('participant.btnBeginStarted') : role === 'host' ? $t('host.btnBegin') : $t('participant.btnBegin') }}
           </v-btn>
         </v-card-text>
-        <v-card-text class="text-center">
+        <v-card-text v-if="role === 'host'" class="text-center">
           <h2 class="white--text accent-4 mb-4 pl-4">
             {{ $t('host.codeTitle') }} <strong class="deep-purple--text">{{ uniqueid }}</strong>
           </h2>
@@ -93,31 +93,28 @@
           <div
             style="width:85%;min-width:300px;"
           >
-            <vue-plyr>
+            <vue-plyr ref="player">
               <video
-                id="player"
                 ref="video"
                 playsinline
                 controls
                 style="--plyr-color-main: #9c27b0;"
                 :current-time.prop="time"
+                :src="blobUrl"
                 @play="sendWS('play',)"
                 @pause="sendWS('pause')"
                 @seeking="sendWS('seekTo', $event.target.currentTime)"
-              >
-                <source
-                  :src="blobUrl"
-                  type="video/mp4"
-                >
-              </video>
+              />
             </vue-plyr>
           </div>
           <MainChat
             :uniqueid="uniqueid"
             :chatmessages="chatMessages"
             :onlineusers="onlineUsers"
+            :role="role"
             @closeSession="closeSession()"
             @newChatMessage="sendWS('chat', $event, username)"
+            @updateVideoFile="updateVideoFile($event)"
           />
         </v-card-text>
       </v-card>
@@ -202,8 +199,10 @@ export default {
         this.$refs.video.pause()
       })
       this.socket.on('seekTo', (timeData) => {
-        const time = JSON.parse(timeData)
-        this.time = time.payload
+        if (this.role === 'participant') {
+          const time = JSON.parse(timeData)
+          this.time = time.payload
+        }
       })
       this.chatMessages.unshift({ payload: this.$t('session.welcome') + this.username, type: 'chat', user: 'Info' })
       this.socket.on('message', (data) => {
@@ -223,6 +222,14 @@ export default {
       })
       this.sendWS('info', 'Video iniciado')
       this.blobUrl = window.URL.createObjectURL(this.video)
+    },
+    updateVideoFile (file) {
+      this.blobUrl = ''
+      this.video = file
+      if (this.video) {
+        this.blobUrl = window.URL.createObjectURL(file)
+        this.sendWS('info', 'Video actualizado')
+      }
     },
     closeSession () {
       this.$emit('runningSession', false)

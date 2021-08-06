@@ -4,11 +4,39 @@
       class="py-0"
     >
       {{ $t('host.codeTitle') }} <strong class="purple--text">{{ uniqueid }}</strong>
+      <span
+        style="float:right;cursor:pointer;"
+        class="red--text darken-3"
+        @click="reload()"
+      >
+        {{ $t('session.closeSessionBtn') }}
+      </span>
     </v-card-text>
     <v-card-text
-      class="py-0"
+      class="py-2"
     >
-      <span v-for="user in onlineusers" :key="user.id"> {{ user.username }} </span>
+      <v-file-input
+        v-model="video"
+        color="deep-purple accent-4"
+        counter
+        :label="role === 'host' ? $t('host.fileInputTitle') : $t('participant.fileInputTitle')"
+        :placeholder="role === 'host' ? $t('host.fileInputPlaceholder') : $t('participant.fileInputPlaceholder')"
+        prepend-icon="mdi-paperclip"
+        outlined
+        :show-size="1000"
+        @change="updateVideoFile(video)"
+      >
+        <template #selection="{ text }">
+          <v-chip
+            color="deep-purple accent-4"
+            dark
+            label
+            small
+          >
+            {{ text }}
+          </v-chip>
+        </template>
+      </v-file-input>
     </v-card-text>
     <v-card-text
       style="height:100px;overflow-y:scroll;display:flex;flex-direction:column-reverse;flex: 1 1 auto;"
@@ -16,12 +44,12 @@
       <p
         v-for="chatMessage in chatmessages"
         :key="chatMessage.date"
+        style="cursor:pointer;"
       >
         <strong>{{ chatMessage.user }}: </strong>{{ chatMessage.payload }}
       </p>
     </v-card-text>
     <v-card-text
-      class="pb-0"
       style="flex: 0 1 auto;"
     >
       <v-text-field
@@ -33,24 +61,6 @@
         autocomplete="off"
         @keydown.enter="sendChat()"
       />
-    </v-card-text>
-    <v-card-text
-      style="flex: 0 1 auto;"
-      class="text-right"
-    >
-      <v-btn
-        color="red darken-1"
-        class="white--text"
-        block
-        @click="reload()"
-      >
-        {{ $t('session.closeSessionBtn') }}
-        <v-icon
-          right
-        >
-          mdi-close
-        </v-icon>
-      </v-btn>
     </v-card-text>
   </v-card>
 </template>
@@ -70,13 +80,18 @@ export default {
     uniqueid: {
       type: String,
       default: ''
+    },
+    role: {
+      type: String,
+      default: ''
     }
   },
   data () {
     return {
       chat: {
         message: ''
-      }
+      },
+      video: null
     }
   },
   methods: {
@@ -88,6 +103,9 @@ export default {
         this.$emit('newChatMessage', this.chat.message)
         this.chat.message = ''
       }
+    },
+    updateVideoFile (video) {
+      this.$emit('updateVideoFile', video)
     }
   }
 
