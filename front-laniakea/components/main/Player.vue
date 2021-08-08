@@ -99,10 +99,10 @@
                 playsinline
                 controls
                 style="--plyr-color-main: #9c27b0;"
-                :current-time.prop="time"
+                :current-time.prop="role === 'participant' ? time : null"
                 :src="blobUrl"
-                @play="sendWS('play',)"
-                @pause="sendWS('pause')"
+                @play="role === 'host' ? sendWS('play') : null"
+                @pause="role === 'host' ? sendWS('pause') : null"
                 @seeking="role === 'host' ? sendWS('seekTo', $event.target.currentTime) : null"
               />
             </vue-plyr>
