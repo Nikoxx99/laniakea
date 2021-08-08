@@ -103,7 +103,7 @@
                 :src="blobUrl"
                 @play="sendWS('play',)"
                 @pause="sendWS('pause')"
-                @seeking="sendWS('seekTo', $event.target.currentTime)"
+                @seeking="role === 'host' ? sendWS('seekTo', $event.target.currentTime) : null"
               />
             </vue-plyr>
           </div>
@@ -190,13 +190,16 @@ export default {
       })
       this.socket.on('disc', (data) => {
         this.chatMessages.unshift({ payload: data + this.$t('session.participantLeft'), type: 'chat', user: 'Info' })
-        console.log(data)
       })
       this.socket.on('play', () => {
-        this.$refs.video.play()
+        if (this.role === 'participant') {
+          this.$refs.video.play()
+        }
       })
       this.socket.on('pause', () => {
-        this.$refs.video.pause()
+        if (this.role === 'participant') {
+          this.$refs.video.pause()
+        }
       })
       this.socket.on('seekTo', (timeData) => {
         if (this.role === 'participant') {

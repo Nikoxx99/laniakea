@@ -34,13 +34,15 @@ module.exports = async () => {
       });
       io.to(rooms[socket.id]).emit('newMember', users)
       socket.on('joinRoom', room => {
-        console.log(socket.username, 'connected')
         socket.join(room);
         rooms[socket.id] = room
         io.to(rooms[socket.id]).emit('newMember', users)
       })
       socket.on('join', message => {
         io.to(rooms[socket.id]).emit('join', message)
+      })
+      socket.on('info', message => {
+        console.log('info', message)
       })
       socket.on('bye', message => {
         io.to(rooms[socket.id]).emit('join', message)
@@ -49,7 +51,6 @@ module.exports = async () => {
       })
       socket.on('chat', message => {
         io.to(rooms[socket.id]).emit('message', message)
-        console.log(users)
       })
       socket.on('play', () => {
         io.to(rooms[socket.id]).emit('play')
@@ -59,9 +60,6 @@ module.exports = async () => {
       })
       socket.on('seekTo', time => {
         io.to(rooms[socket.id]).emit('seekTo', time)
-      })
-      socket.on('disconnect', socket => {
-        console.log(socket.username, 'disconnected', users, 'remaining')
       })
     })
   })
