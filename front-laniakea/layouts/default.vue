@@ -36,3 +36,15 @@ export default {
   }
 }
 </script>
+<style>
+  body {
+    background-color:#000;
+  }
+  #app {
+    background-color:#000;
+  }
+  .theme--dark.v-card {
+    background-color: #000000;
+    color: #FFFFFF;
+  }
+</style>

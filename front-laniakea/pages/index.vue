@@ -15,7 +15,7 @@
     </v-app-bar>
     <v-row justify="center" align="center">
       <v-col cols="12" sm="12" md="12" class="py-0 px-0">
-        <v-card v-if="!session.isInitialized">
+        <v-card v-if="!session.isInitialized" color="black">
           <v-alert
             v-if="error.status"
             dense
