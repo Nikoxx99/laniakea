@@ -111,4 +111,6 @@ license.txt
 exports
 *.cache
 build
+config/server.js
+config/database.js
 .strapi-updater.json
