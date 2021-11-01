@@ -73,7 +73,6 @@
 </template>
 
 <script>
-
 export default {
   data: () => ({
     username: '',
@@ -152,33 +151,6 @@ export default {
         this.valid = false
       }
     }
-    // createUser () {
-    //   this.$apollo.mutate({
-    //     mutation: gql`mutation ($input: UserInput!){
-    //       createUser(input: $input){
-    //         success
-    //         token
-    //         username
-    //         errors{
-    //           path
-    //           message
-    //         }
-    //       }
-    //     }`,
-    //     variables: {
-    //       input: {
-    //         username: this.username,
-    //         email: this.email,
-    //         password: this.password
-    //       }
-    //     }
-    //   }).then((input) => {
-    //     this.$router.push({ path: '/login?firstTime=true' })
-    //   }).catch((error) => {
-    //     // eslint-disable-next-line no-console
-    //     console.error(error)
-    //   })
-    // }
   }
 }
 </script>

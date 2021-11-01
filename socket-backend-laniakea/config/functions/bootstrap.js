@@ -11,6 +11,7 @@
  */
 
 require('dotenv').config()
+const randomColor = require('randomcolor')
 module.exports = async () => {
   process.nextTick(() =>{
     const io = require("socket.io")(strapi.server, {cors: {
@@ -31,6 +32,7 @@ module.exports = async () => {
       users.push({
         id: socket.id,
         username: socket.username,
+        title_color: randomColor()
       });
       io.to(rooms[socket.id]).emit('newMember', users)
       socket.on('joinRoom', room => {
@@ -39,10 +41,7 @@ module.exports = async () => {
         io.to(rooms[socket.id]).emit('newMember', users)
       })
       socket.on('join', message => {
-        io.to(rooms[socket.id]).emit('join', message)
-      })
-      socket.on('info', message => {
-        console.log('info', message)
+        socket.to(rooms[socket.id]).emit('join', message)
       })
       socket.on('bye', message => {
         io.to(rooms[socket.id]).emit('join', message)

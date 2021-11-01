@@ -91,13 +91,15 @@
       <v-card>
         <v-card-text v-if="started" class="text-left px-0 pb-0 d-flex" style="height:100vh">
           <div
-            style="width:85%;min-width:300px;"
+            id="container"
+            style="width:100%;min-width:300px;"
           >
-            <vue-plyr ref="player">
+            <vue-plyr ref="plyr" :options="role === 'host' ? optionsHost : optionsParticipant">
               <video
                 ref="video"
                 playsinline
-                controls
+                :controls="false"
+                :clickToPlay="role === 'host' ? true : false"
                 style="--plyr-color-main: #9c27b0;"
                 :current-time.prop="role === 'participant' ? time : null"
                 :src="blobUrl"
@@ -106,16 +108,16 @@
                 @seeking="role === 'host' ? sendWS('seekTo', $event.target.currentTime) : null"
               />
             </vue-plyr>
+            <MainChat
+              :uniqueid="uniqueid"
+              :chatmessages="chatMessages"
+              :onlineusers="onlineUsers"
+              :role="role"
+              @closeSession="closeSession()"
+              @newChatMessage="sendWS('chat', $event, username)"
+              @updateVideoFile="updateVideoFile($event)"
+            />
           </div>
-          <MainChat
-            :uniqueid="uniqueid"
-            :chatmessages="chatMessages"
-            :onlineusers="onlineUsers"
-            :role="role"
-            @closeSession="closeSession()"
-            @newChatMessage="sendWS('chat', $event, username)"
-            @updateVideoFile="updateVideoFile($event)"
-          />
         </v-card-text>
       </v-card>
     </v-img>
@@ -127,6 +129,7 @@ import { nanoid } from 'nanoid'
 import { io } from 'socket.io-client'
 const ping = new Audio('ping.mp3')
 export default {
+  name: 'Player',
   props: {
     role: {
       type: String,
@@ -139,6 +142,23 @@ export default {
   },
   data () {
     return {
+      optionsHost: {
+        controls: ['play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'airplay', 'fullscreen'],
+        fullscreen: {
+          enabled: true,
+          container: '#container'
+        },
+        clickToPlay: false
+      },
+      optionsParticipant: {
+        controls: ['current-time', 'duration', 'mute', 'volume', 'airplay', 'fullscreen'],
+        fullscreen: {
+          enabled: true,
+          container: '#container'
+        },
+        clickToPlay: false,
+        keyboard: false
+      },
       video: null,
       initialized: false,
       started: false,
@@ -156,10 +176,8 @@ export default {
       return document.hasFocus()
     }
   },
-  destroyed () {
-    if (this.socket) {
-      this.socket.emit('bye', this.username)
-    }
+  mounted () {
+    window.addEventListener('beforeunload', this.closeSession)
   },
   methods: {
     sendWS (type, payload, user) {
@@ -180,7 +198,7 @@ export default {
       this.$emit('runningSession', true)
       this.socket = io(process.env.wsURI, { auth: { username: this.username } })
       this.socket.emit('joinRoom', this.uniqueid)
-      this.sendWS('join', this.username + ' ' + this.$t('session.newParticipant'), 'Info')
+      this.sendWS('join', { message: this.username + ' ' + this.$t('session.newParticipant') }, 'Info')
       this.socket.on('join', (data) => {
         const action = JSON.parse(data)
         this.chatMessages.unshift(action)
@@ -207,7 +225,7 @@ export default {
           this.time = time.payload
         }
       })
-      this.chatMessages.unshift({ payload: this.$t('session.welcome') + this.username, type: 'chat', user: 'Info' })
+      this.chatMessages.unshift({ payload: { message: this.$t('session.welcome') + this.username }, type: 'chat', user: 'Info' })
       this.socket.on('message', (data) => {
         const action = JSON.parse(data)
         switch (action.type) {
@@ -236,7 +254,7 @@ export default {
     },
     closeSession () {
       this.$emit('runningSession', false)
-      this.sendWS('bye', this.username + ' ' + this.$t('session.participantLeft'), 'Info')
+      this.sendWS('bye', { message: this.username + ' ' + this.$t('session.participantLeft') }, 'Info')
       this.socket.disconnect()
       this.started = false
       this.initialized = false
@@ -250,3 +268,6 @@ export default {
   }
 }
 </script>
+<style>
+
+</style>

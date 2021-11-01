@@ -1,6 +1,6 @@
 {
-  "name": "front-laniakea",
-  "version": "1.0.0",
+  "name": "laniakea",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -19,6 +19,7 @@
     "nanoid": "^3.1.23",
     "nuxt": "^2.15.3",
     "nuxt-i18n": "^6.27.0",
+    "randomcolor": "^0.6.2",
     "socket.io-client": "^4.1.2",
     "vue-plyr": "^7.0.0"
   },

@@ -68,16 +68,6 @@
         />
       </v-col>
     </v-row>
-    <v-row>
-      <v-col class="text-center">
-        <h1>Sugerencias</h1>
-      </v-col>
-    </v-row>
-    <v-row class="justify-center">
-      <v-col cols="8">
-        <div id="disqus_thread" />
-      </v-col>
-    </v-row>
   </div>
 </template>
 

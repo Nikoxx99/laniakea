@@ -1,7 +1,10 @@
 <template>
-  <v-card style="width:350px;display:flex;flex-flow: column;">
+  <v-card flat class="chatLaniakea">
     <v-card-text
-      class="py-0"
+      style="background-color:rgba(0,0,0,0.4);"
+      class="py-0 hideMe"
+      @mouseenter="e => e.target.classList.remove('hideMe')"
+      @mouseleave="e => e.target.classList.add('hideMe')"
     >
       {{ $t('host.codeTitle') }} <strong class="purple--text">{{ uniqueid }}</strong>
       <span
@@ -13,7 +16,9 @@
       </span>
     </v-card-text>
     <v-card-text
-      class="py-2"
+      :class="{ hideMe: visible.input }"
+      @mouseenter="visible.input = false"
+      @mouseleave="visible.input = true"
     >
       <v-file-input
         v-model="video"
@@ -39,18 +44,25 @@
       </v-file-input>
     </v-card-text>
     <v-card-text
+      class="scroller"
       style="height:100px;overflow-y:scroll;display:flex;flex-direction:column-reverse;flex: 1 1 auto;"
+      @mouseenter="visible.chatItem = false"
+      @mouseleave="visible.chatItem = true"
     >
       <p
         v-for="chatMessage in chatmessages"
         :key="chatMessage.date"
-        style="cursor:pointer;"
+        :class="{ hideMe2: visible.chatItem }"
+        style="cursor:pointer;background-color:rgba(0,0,0,0.4);padding: 10px 10px 10px 10px"
       >
-        <strong>{{ chatMessage.user }}: </strong>{{ chatMessage.payload }}
+        <strong :style="`color:${chatMessage.payload.color}`">{{ chatMessage.user }}: </strong>{{ chatMessage.payload.message }}
       </p>
     </v-card-text>
     <v-card-text
-      style="flex: 0 1 auto;"
+      :class="{ hideMe: visible.inputChat }"
+      style="flex: 0 1 auto;background-color:rgba(0,0,0,0.4);"
+      @mouseenter="visible.inputChat = false, visible.chat = false, visible.chatItem = false"
+      @mouseleave="visible.inputChat = true, visible.chat = true, visible.chatItem = true"
     >
       <v-text-field
         v-model="chat.message"
@@ -66,6 +78,7 @@
 </template>
 
 <script>
+const randomColor = require('randomcolor')
 export default {
   name: 'Chat',
   props: {
@@ -89,9 +102,21 @@ export default {
   data () {
     return {
       chat: {
-        message: ''
+        message: '',
+        color: randomColor()
       },
-      video: null
+      video: null,
+      visible: {
+        input: true,
+        chat: true,
+        chatItem: true,
+        inputChat: true
+      }
+    }
+  },
+  computed: {
+    randomColor () {
+      return randomColor()
     }
   },
   methods: {
@@ -100,7 +125,7 @@ export default {
     },
     sendChat () {
       if (this.chat.message) {
-        this.$emit('newChatMessage', this.chat.message)
+        this.$emit('newChatMessage', this.chat)
         this.chat.message = ''
       }
     },
@@ -114,7 +139,7 @@ export default {
 
 <style scoped>
 ::-webkit-scrollbar {
-width: 10px;
+width: 5px;
 }
 
 /* Track */
@@ -131,4 +156,54 @@ width: 10px;
 ::-webkit-scrollbar-thumb:hover {
   background: #4e2a8d !important
 }
+.scroller {
+  overflow-y: scroll;
+  scrollbar-color: #4e2a8d rgba(48, 48, 48,0);
+  scrollbar-width: thin;
+}
+
+.chatLaniakea {
+  position: absolute;
+  float:right;
+  right:0;
+  bottom:40px;
+  width:350px;
+  height: 90vh;;
+  display:flex;
+  flex-flow: column;
+  background-color:rgba(0,0,0,0);
+}
+.hideMe {
+    -moz-animation: cssAnimation 1s ease-in 2s forwards;
+    /* Firefox */
+    -webkit-animation: cssAnimation 1s ease-in 2s forwards;
+    /* Safari and Chrome */
+    -o-animation: cssAnimation 1s ease-in 2s forwards;
+    /* Opera */
+    animation: cssAnimation 1s ease-in 2s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+.hideMe2 {
+    -moz-animation: cssAnimation 1s ease-in 4s forwards;
+    /* Firefox */
+    -webkit-animation: cssAnimation 1s ease-in 4s forwards;
+    /* Safari and Chrome */
+    -o-animation: cssAnimation 1s ease-in 4s forwards;
+    /* Opera */
+    animation: cssAnimation 1s ease-in 4s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+@keyframes cssAnimation {
+    to {
+        opacity: 0.1;
+    }
+}
+@-webkit-keyframes cssAnimation {
+    to {
+        opacity: 0.1;
+    }
+}
+
 </style>
