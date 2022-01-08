@@ -6,14 +6,31 @@
       @mouseenter="e => e.target.classList.remove('hideMe')"
       @mouseleave="e => e.target.classList.add('hideMe')"
     >
-      {{ $t('host.codeTitle') }} <strong class="purple--text">{{ uniqueid }}</strong>
-      <span
-        style="float:right;cursor:pointer;"
-        class="red--text darken-3"
-        @click="reload()"
-      >
-        {{ $t('session.closeSessionBtn') }}
-      </span>
+      <h2>
+        {{ $t('host.codeTitle') }}
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <strong
+              id="uniqueid"
+              class="purple--text"
+              style="cursor:pointer;"
+              v-bind="attrs"
+              v-on="on"
+              @click="copyId"
+              @hover="copyStatus = 'copyToClipboard'"
+            >{{ uniqueid }}</strong>
+          </template>
+          <span>{{ $t(`session.${copyStatus}`) }}</span>
+        </v-tooltip>
+
+        <span
+          style="float:right;cursor:pointer;"
+          class="red--text darken-3"
+          @click="reload()"
+        >
+          {{ $t('session.closeSessionBtn') }}
+        </span>
+      </h2>
     </v-card-text>
     <v-card-text
       :class="{ hideMe: visible.input }"
@@ -111,7 +128,8 @@ export default {
         chat: true,
         chatItem: true,
         inputChat: true
-      }
+      },
+      copyStatus: 'copyToClipboard'
     }
   },
   computed: {
@@ -131,6 +149,10 @@ export default {
     },
     updateVideoFile (video) {
       this.$emit('updateVideoFile', video)
+    },
+    copyId () {
+      navigator.clipboard.writeText(this.uniqueid)
+      this.copyStatus = 'copiedToClipboard'
     }
   }
 

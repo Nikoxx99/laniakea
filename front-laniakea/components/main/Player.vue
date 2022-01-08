@@ -1,126 +1,114 @@
 <template>
   <div>
-    <v-img
-      src="bg1.jpg"
-      style="width:100%!important;height:100vh!important;background-position:bottom!important"
-    >
-      <v-card v-if="!started" :class="started ? '' : 'mt-5 mx-auto pa-3'" max-width="674" color="rgba(5,5,5,0.6)">
-        <v-card-title>
-          <v-alert
-            text
-            dense
-            color="teal"
-            icon="mdi-check"
-            border="left"
-          >
-            <h3>
-              {{ role === 'host' ? $t('host.title') : $t('participant.title') }} <strong>{{ username }}</strong>
-            </h3>
-          </v-alert>
-          <v-spacer />
-          <v-btn
-            color="red darken-1"
-            class="ma-2 white--text"
-            tile
-            @click="$emit('changeRole')"
-          >
-            {{ $t('session.switchRoleBtn') }}
-            <v-icon
-              right
+    <v-card v-if="!started" :class="started ? '' : 'mt-5 mx-auto pa-3'" max-width="674" color="rgba(5,5,5,0)" elevation="0">
+      <v-alert
+        text
+        dense
+        color="teal"
+        icon="mdi-check"
+        border="left"
+      >
+        <h3>
+          {{ role === 'host' ? $t('host.title') : $t('participant.title') }} <strong>{{ username }}</strong>
+        </h3>
+      </v-alert>
+      <v-card-text>
+        <v-text-field
+          v-if="role === 'participant'"
+          v-model="uniqueid"
+          class="justify-self-center"
+          :label="$t('participant.uniqueIdSelectorLabel')"
+          hide-details
+          outlined
+          prepend-icon="mdi-fingerprint"
+        />
+      </v-card-text>
+      <v-card-text>
+        <v-file-input
+          v-model="video"
+          color="deep-purple accent-4"
+          counter
+          :label="role === 'host' ? $t('host.fileInputTitle') : $t('participant.fileInputTitle')"
+          :placeholder="role === 'host' ? $t('host.fileInputPlaceholder') : $t('participant.fileInputPlaceholder')"
+          prepend-icon="mdi-paperclip"
+          outlined
+          :show-size="1000"
+        >
+          <template #selection="{ text }">
+            <v-chip
+              color="deep-purple accent-4"
+              dark
+              label
+              small
             >
-              mdi-account-arrow-left-outline
-            </v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-card-text>
-          <p>
-            {{ role === 'host' ? $t('host.info') : $t('participant.info') }}
-          </p>
-          <v-text-field
-            v-if="role === 'participant'"
-            v-model="uniqueid"
-            class="justify-self-center"
-            :label="$t('participant.uniqueIdSelectorLabel')"
-            hide-details
-            outlined
-          />
-        </v-card-text>
-        <v-card-text>
-          <v-file-input
-            v-model="video"
-            color="deep-purple accent-4"
-            counter
-            :label="role === 'host' ? $t('host.fileInputTitle') : $t('participant.fileInputTitle')"
-            :placeholder="role === 'host' ? $t('host.fileInputPlaceholder') : $t('participant.fileInputPlaceholder')"
-            prepend-icon="mdi-paperclip"
-            outlined
-            :show-size="1000"
-            @change="role === 'host' ? generateUniqueId() : null"
+              {{ text }}
+            </v-chip>
+          </template>
+        </v-file-input>
+      </v-card-text>
+      <v-card-text>
+        <v-btn
+          v-model="initialized"
+          elevation="0"
+          :color="started ? 'green darken-4' : 'deep-purple accent-4'"
+          large
+          rounded
+          x-large
+          block
+          @click="beginSession()"
+        >
+          <v-icon>mdi-broadcast</v-icon> {{ started ? role === 'host' ? $t('host.btnBeginStarted') : $t('participant.btnBeginStarted') : role === 'host' ? $t('host.btnBegin') : $t('participant.btnBegin') }}
+        </v-btn>
+      </v-card-text>
+      <v-card-text class="d-flex justify-center">
+        <v-btn
+          color="red darken-1"
+          class="ma-2 white--text"
+          rounded
+          elevation="0"
+          @click="$emit('changeRole')"
+        >
+          {{ $t('session.switchRoleBtn') }}
+          <v-icon
+            right
           >
-            <template #selection="{ text }">
-              <v-chip
-                color="deep-purple accent-4"
-                dark
-                label
-                small
-              >
-                {{ text }}
-              </v-chip>
-            </template>
-          </v-file-input>
-        </v-card-text>
-        <v-card-text>
-          <v-btn
-            v-model="initialized"
-            elevation="2"
-            :color="started ? 'green darken-4' : 'deep-purple accent-4'"
-            large
-            x-large
-            block
-            @click="beginSession()"
-          >
-            {{ started ? role === 'host' ? $t('host.btnBeginStarted') : $t('participant.btnBeginStarted') : role === 'host' ? $t('host.btnBegin') : $t('participant.btnBegin') }}
-          </v-btn>
-        </v-card-text>
-        <v-card-text v-if="role === 'host'" class="text-center">
-          <h2 class="white--text accent-4 mb-4 pl-4">
-            {{ $t('host.codeTitle') }} <strong class="deep-purple--text">{{ uniqueid }}</strong>
-          </h2>
-        </v-card-text>
-      </v-card>
-      <v-card>
-        <v-card-text v-if="started" class="text-left px-0 pb-0 d-flex" style="height:100vh">
-          <div
-            id="container"
-            style="width:100%;min-width:300px;"
-          >
-            <vue-plyr ref="plyr" :options="role === 'host' ? optionsHost : optionsParticipant">
-              <video
-                ref="video"
-                playsinline
-                :controls="false"
-                :clickToPlay="role === 'host' ? true : false"
-                style="--plyr-color-main: #9c27b0;"
-                :current-time.prop="role === 'participant' ? time : null"
-                :src="blobUrl"
-                @play="role === 'host' ? sendWS('play') : null"
-                @pause="role === 'host' ? sendWS('pause') : null"
-                @seeking="role === 'host' ? sendWS('seekTo', $event.target.currentTime) : null"
-              />
-            </vue-plyr>
-            <MainChat
-              :uniqueid="uniqueid"
-              :chatmessages="chatMessages"
-              :onlineusers="onlineUsers"
-              :role="role"
-              @closeSession="closeSession()"
-              @newChatMessage="sendWS('chat', $event, username)"
-              @updateVideoFile="updateVideoFile($event)"
+            mdi-account-arrow-left-outline
+          </v-icon>
+        </v-btn>
+      </v-card-text>
+    </v-card>
+    <v-card>
+      <v-card-text v-if="started" class="text-left px-0 pb-0 d-flex" style="height:100vh">
+        <div
+          id="container"
+          style="width:100%;min-width:300px;"
+        >
+          <vue-plyr ref="plyr" :options="role === 'host' ? optionsHost : optionsParticipant">
+            <video
+              ref="video"
+              playsinline
+              :controls="false"
+              :clickToPlay="role === 'host' ? true : false"
+              style="--plyr-color-main: #9c27b0;"
+              :current-time.prop="role === 'participant' ? time : null"
+              :src="blobUrl"
+              @play="role === 'host' ? sendWS('play') : null"
+              @pause="role === 'host' ? sendWS('pause') : null"
+              @seeking="role === 'host' ? sendWS('seekTo', $event.target.currentTime) : null"
             />
-          </div>
-        </v-card-text>
-      </v-card>
-    </v-img>
+          </vue-plyr>
+          <MainChat
+            :uniqueid="uniqueid"
+            :chatmessages="chatMessages"
+            :onlineusers="onlineUsers"
+            :role="role"
+            @closeSession="closeSession()"
+            @newChatMessage="sendWS('chat', $event, username)"
+            @updateVideoFile="updateVideoFile($event)"
+          />
+        </div>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
@@ -194,6 +182,7 @@ export default {
     },
     beginSession () {
       /* The env dep is already installed. Use it to change the local ws URI */
+      if (this.role === 'host') { this.generateUniqueId() }
       this.started = true
       this.$emit('runningSession', true)
       this.socket = io(process.env.wsURI, { auth: { username: this.username } })
@@ -263,7 +252,7 @@ export default {
       this.time = 0
     },
     generateUniqueId () {
-      this.uniqueid = nanoid(10)
+      this.uniqueid = nanoid(6)
     }
   }
 }

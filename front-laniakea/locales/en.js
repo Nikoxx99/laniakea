@@ -26,7 +26,7 @@ export default {
     registerOnLoginPage: 'Register',
     error: 'Invalid credentials.',
     info: {
-      alreadyAccount: '¿Not have an account?',
+      alreadyAccount: 'Does not have an account?',
       registerOptions: 'Register an account to join your friends'
     }
   },
@@ -36,15 +36,17 @@ export default {
     nameSelector: 'Choose your name please',
     nameSelectorLabel: 'Input your name',
     subtitle: 'Please choose your role in this session',
-    btnHost: 'HOST',
-    btnParticipant: 'PARTICIPANT'
+    btnHost: 'Begin transmission',
+    btnParticipant: 'Join a tramision'
   },
   session: {
     welcome: 'Welcome to the session ',
     newParticipant: 'has joined the session',
     participantLeft: 'has left the session',
     switchRoleBtn: 'Change Role',
-    closeSessionBtn: 'Close session'
+    closeSessionBtn: 'Close session',
+    copyToClipboard: 'Copy to clipboard',
+    copiedToClipboard: 'Copied to clipboard!'
   },
   chat: {
     chatBox: {
@@ -57,13 +59,13 @@ export default {
     info: 'Now select a videofile to begin with the session',
     fileInputTitle: 'Select a videofile to sync',
     fileInputPlaceholder: 'Videofile to sync',
-    btnBegin: 'Begin sync transmision to participants',
+    btnBegin: ' Begin sync transmision now',
     btnBeginStarted: 'Session has begun',
-    codeTitle: 'Session code: '
+    codeTitle: 'Session: '
   },
   participant: {
     title: 'You are now interacting as a participant of a session',
-    info: 'Now input the unique ID of the session you want to participate',
+    info: 'Now input the ID of the session',
     uniqueIdSelectorLabel: 'Input the unique ID',
     fileInputTitle: 'Select a videofile to sync',
     fileInputPlaceholder: 'Videofile to sync',

@@ -1,7 +1,7 @@
 <template>
   <v-card
     flat
-    color="rgba(51,51,51,0.5)"
+    color="rgba(51,51,51,0)"
   >
     <v-alert
       v-if="firstTime"
@@ -27,9 +27,11 @@
           v-model="username"
           :label="$t('login.username')"
           required
+          outlined
         />
         <v-text-field
           v-model="password"
+          outlined
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           :type="showPassword ? 'text' : 'password'"
           :label="$t('login.password')"
@@ -40,7 +42,13 @@
       </form>
     </v-card-text>
     <v-card-text>
-      <v-btn tile text block class="my-2 blue darken-4" @click.enter="login">
+      <v-btn
+        text
+        block
+        rounded
+        class="my-2 blue darken-4"
+        @click.enter="login"
+      >
         {{ $t('login.loginButton') }}
       </v-btn>
     </v-card-text>
@@ -51,7 +59,13 @@
       <p class="text-center">
         {{ $t('login.info.registerOptions') }}
       </p>
-      <v-btn block tile text class="yellow darken-4" href="/register">
+      <v-btn
+        block
+        text
+        rounded
+        class="yellow darken-4"
+        href="/register"
+      >
         {{ $t('login.registerOnLoginPage') }}
       </v-btn>
     </v-card-text>
@@ -108,7 +122,7 @@ export default {
         }
         this.$store.commit('setAuth', auth)
         Cookie.set('auth', auth)
-        this.$router.replace('/')
+        window.location.href = '/'
       } else {
         this.loginFailed = true
       }

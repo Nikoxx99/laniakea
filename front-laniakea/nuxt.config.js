@@ -65,6 +65,11 @@ export default {
       { code: 'es', iso: 'es-ES', file: 'es.js', dir: 'ltr' }
     ],
     defaultLocale: 'en',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root'
+    },
     langDir: '~/locales/'
   },
 

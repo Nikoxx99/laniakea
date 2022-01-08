@@ -1,7 +1,7 @@
 <template>
   <v-card
     flat
-    color="rgba(51,51,51,0.5)"
+    color="rgba(51,51,51,0)"
   >
     <v-card-title class="justify-center">
       {{ $t('auth.registerTitle') }}
@@ -12,11 +12,13 @@
           v-model="username"
           label="Username"
           required
+          outlined
         />
         <v-text-field
           v-model="email"
           :label="$t('auth.email')"
           :hint="$t('auth.emailHint')"
+          outlined
         />
         <v-text-field
           v-model="password"
@@ -28,6 +30,7 @@
           counter
           :error="!matchPasswords"
           :success="matchPasswords"
+          outlined
           @click:append="showPassword = !showPassword"
         />
         <v-text-field
@@ -38,6 +41,7 @@
           :hint="$t('auth.confirmPasswordHint')"
           required
           counter
+          outlined
           :success="matchPasswords"
           @click:append="showPassword = !showPassword"
         />
@@ -47,6 +51,7 @@
       <v-btn
         block
         text
+        rounded
         class="my-2 yellow darken-4"
         :loading="loading"
         :disabled="loading"
@@ -65,7 +70,7 @@
       <p class="text-center">
         {{ $t('auth.info.registerOptions') }}
       </p>
-      <v-btn block tile text class="blue darken-4" href="/login">
+      <v-btn block rounded text class="blue darken-4" href="/login">
         {{ $t('auth.loginOnRegisterPage') }}
       </v-btn>
     </v-card-text>
