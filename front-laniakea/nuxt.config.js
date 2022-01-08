@@ -13,6 +13,9 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      { src: 'https://app.laniakea.live/stars.js' }
     ]
   },
 
@@ -22,8 +25,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/vue-plyr', mode: 'client' },
-    { src: '~/plugins/stars', mode: 'client' }
+    { src: '~/plugins/vue-plyr', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
