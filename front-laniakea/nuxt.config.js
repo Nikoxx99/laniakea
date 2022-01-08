@@ -15,7 +15,7 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
     script: [
-      { src: 'https://app.laniakea.live/stars.js', type: 'text/javascript', defer: true }
+      { src: 'https://app.laniakea.live/stars.js', type: 'text/javascript', defer: true, body: true }
     ]
   },
 
