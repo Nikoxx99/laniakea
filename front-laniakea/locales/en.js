@@ -37,7 +37,7 @@ export default {
     nameSelectorLabel: 'Input your name',
     subtitle: 'Please choose your role in this session',
     btnHost: 'Begin transmission',
-    btnParticipant: 'Join a tramision'
+    btnParticipant: 'Join a transmission'
   },
   session: {
     welcome: 'Welcome to the session ',

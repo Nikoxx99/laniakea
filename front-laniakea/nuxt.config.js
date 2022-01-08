@@ -22,7 +22,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/vue-plyr', mode: 'client' }
+    { src: '~/plugins/vue-plyr', mode: 'client' },
+    { src: '~/plugins/stars', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -36,8 +37,7 @@ export default {
     '@nuxtjs/vuetify',
     '@nuxtjs/dotenv',
     '@nuxtjs/strapi',
-    '@nuxtjs/google-analytics',
-    'nuxt-build-optimisations'
+    '@nuxtjs/google-analytics'
   ],
   strapi: {
     url: process.env.API_STRAPI_ENDPOINT,
@@ -47,10 +47,6 @@ export default {
   },
   googleAnalytics: {
     id: 'G-HLP3TR31KJ'
-  },
-
-  buildOptimisations: {
-    profile: 'experimental'
   },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
