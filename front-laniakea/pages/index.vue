@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section v-if="!session.runningSessionValue">
+    <section v-if="!runningSessionValue">
       <div class="landscape" />
       <div class="filter" />
       <canvas id="canvas" />
