@@ -14,6 +14,12 @@
     >
       <v-spacer />
 
+      <v-btn
+        icon
+        href="https://discord.gg/N6qZJZftPs"
+      >
+        <v-icon>mdi-discord</v-icon>
+      </v-btn>
       <v-btn icon @click="logout">
         <v-icon>mdi-exit-to-app</v-icon>
       </v-btn>
@@ -67,6 +73,13 @@
             >
               <v-icon>mdi-plus</v-icon>{{ $t('index.btnParticipant') }}
             </v-btn>
+          </v-card-text>
+          <v-card-text>
+            <v-row class="justify-center mt-10 px-4">
+              <p class="mr-2">
+                {{ $t('index.communityInfo') }}
+              </p> <a href="https://discord.gg/N6qZJZftPs"> {{ $t('index.communityLink') }}</a>
+            </v-row>
           </v-card-text>
         </v-card>
         <MainPlayer

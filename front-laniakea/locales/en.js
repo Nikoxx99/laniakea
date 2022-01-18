@@ -37,7 +37,9 @@ export default {
     nameSelectorLabel: 'Input your name',
     subtitle: 'Please choose your role in this session',
     btnHost: 'Begin transmission',
-    btnParticipant: 'Join a transmission'
+    btnParticipant: 'Join a transmission',
+    communityInfo: 'Any problems or suggestions to improve the experience? ',
+    communityLink: 'Visit our Discord'
   },
   session: {
     welcome: 'Welcome to the session ',

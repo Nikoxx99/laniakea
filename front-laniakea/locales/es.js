@@ -37,7 +37,9 @@ export default {
     nameSelectorLabel: 'Ingresa tu nombre',
     subtitle: 'Por favor selecciona tu rol en esta sesión',
     btnHost: 'Transmitir',
-    btnParticipant: 'Unirte a una transmision'
+    btnParticipant: 'Unirte a una transmision',
+    communityInfo: '¿Tienes problemas o una sugerencia para mejorar la experiencia? ',
+    communityLink: 'Visita nuestro Discord'
   },
   session: {
     welcome: 'Bienvenido a la sesion ',
