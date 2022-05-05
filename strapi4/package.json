@@ -16,6 +16,7 @@
     "mysql": "2.18.1",
     "randomcolor": "^0.6.2",
     "socket.io": "^4.5.0",
+    "strapi-plugin-io": "^1.1.1",
     "strapi-plugin-transformer": "^2.0.1"
   },
   "author": {
