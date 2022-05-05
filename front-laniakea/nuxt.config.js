@@ -15,8 +15,12 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
     script: [
-      { src: 'https://app.laniakea.live/stars.js', type: 'text/javascript', defer: true, body: true }
+      { src: '/stars.js', type: 'text/javascript', defer: true, body: true }
     ]
+  },
+
+  publicRuntimeConfig: {
+    API_STRAPI_ENDPOINT: process.env.API_STRAPI_ENDPOINT || 'http://localhost:1337/api/'
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

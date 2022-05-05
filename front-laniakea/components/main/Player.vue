@@ -115,7 +115,7 @@
 <script>
 import { nanoid } from 'nanoid'
 import { io } from 'socket.io-client'
-const ping = new Audio('ping.mp3')
+const ping = 'ping'
 export default {
   name: 'Player',
   props: {

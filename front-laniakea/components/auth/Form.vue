@@ -73,7 +73,6 @@
 </template>
 
 <script>
-import Cookie from 'js-cookie'
 export default {
   data: () => ({
     username: '',
@@ -96,36 +95,10 @@ export default {
       this.password = ''
     },
     async login () {
-      const { login } = await this.$strapi.graphql({
-        query: `mutation($input: UsersPermissionsLoginInput!) {
-            login(input:$input){
-              jwt
-              user{
-                id
-                username
-                confirmed
-              }
-            }
-          }`,
-        variables: {
-          input: {
-            identifier: this.username,
-            password: this.password,
-            provider: 'local'
-          }
-        }
+      await this.$store.dispatch('loginHandler/loginUser', {
+        username: this.username,
+        password: this.password
       })
-      if (login.jwt) {
-        const auth = {
-          accessToken: login.jwt,
-          username: this.username
-        }
-        this.$store.commit('setAuth', auth)
-        Cookie.set('auth', auth)
-        window.location.href = '/'
-      } else {
-        this.loginFailed = true
-      }
     }
   }
 }
