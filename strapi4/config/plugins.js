@@ -1,5 +1,6 @@
 module.exports = ({ env }) => ({
   "io": {
+    "rooms": {},
     "enabled": true,
     "config": {
       "IOServerOptions" :{
@@ -13,11 +14,16 @@ module.exports = ({ env }) => ({
         {
           "name": "connection",
           "handler": ({ strapi }, socket) => {
-            strapi.log.info(`[io] new connection with id ${socket.id}. details: ${JSON.stringify(socket.handshake)}`);
+            strapi.log.info(`[io] new connection with id ${socket.id}.`);
             socket.emit("message:update", {
-              id: socket.id,
-              details: socket.handshake
+              id: socket.id
             });
+            
+            socket.on('joinRoom', (room) => {
+              socket.join(room);
+              socket.rooms[socket.id] = room
+              console.log(`[io] ${socket.id} joined ${room}. Rooms: ${JSON.stringify(socket.rooms)}`)
+            })
           },
         },
       ]

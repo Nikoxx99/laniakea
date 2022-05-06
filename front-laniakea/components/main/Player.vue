@@ -114,7 +114,6 @@
 
 <script>
 import { nanoid } from 'nanoid'
-import { io } from 'socket.io-client'
 const ping = 'ping'
 export default {
   name: 'Player',
@@ -183,37 +182,45 @@ export default {
     beginSession () {
       /* The env dep is already installed. Use it to change the local ws URI */
       if (this.role === 'host') { this.generateUniqueId() }
+
       this.started = true
       this.$emit('runningSession', true)
-      this.socket = io(process.env.wsURI, { auth: { username: this.username } })
+
+      this.socket = this.$createSocket({
+        auth: this.$store.state.auth,
+        query: {
+          test: 'test'
+        }
+      })
       this.socket.emit('joinRoom', this.uniqueid)
-      this.sendWS('join', { message: this.username + ' ' + this.$t('session.newParticipant') }, 'Info')
-      this.socket.on('join', (data) => {
-        const action = JSON.parse(data)
-        this.chatMessages.unshift(action)
-      })
-      this.socket.on('newMember', (data) => {
-        this.onlineUsers = data
-      })
-      this.socket.on('disc', (data) => {
-        this.chatMessages.unshift({ payload: data + this.$t('session.participantLeft'), type: 'chat', user: 'Info' })
-      })
-      this.socket.on('play', () => {
-        if (this.role === 'participant') {
-          this.$refs.video.play()
-        }
-      })
-      this.socket.on('pause', () => {
-        if (this.role === 'participant') {
-          this.$refs.video.pause()
-        }
-      })
-      this.socket.on('seekTo', (timeData) => {
-        if (this.role === 'participant') {
-          const time = JSON.parse(timeData)
-          this.time = time.payload
-        }
-      })
+      // this.sendWS('join', { message: this.username + ' ' + this.$t('session.newParticipant') }, 'Info')
+
+      // this.socket.on('join', (data) => {
+      //   const action = JSON.parse(data)
+      //   this.chatMessages.unshift(action)
+      // })
+      // this.socket.on('newMember', (data) => {
+      //   this.onlineUsers = data
+      // })
+      // this.socket.on('disc', (data) => {
+      //   this.chatMessages.unshift({ payload: data + this.$t('session.participantLeft'), type: 'chat', user: 'Info' })
+      // })
+      // this.socket.on('play', () => {
+      //   if (this.role === 'participant') {
+      //     this.$refs.video.play()
+      //   }
+      // })
+      // this.socket.on('pause', () => {
+      //   if (this.role === 'participant') {
+      //     this.$refs.video.pause()
+      //   }
+      // })
+      // this.socket.on('seekTo', (timeData) => {
+      //   if (this.role === 'participant') {
+      //     const time = JSON.parse(timeData)
+      //     this.time = time.payload
+      //   }
+      // })
       this.chatMessages.unshift({ payload: { message: this.$t('session.welcome') + this.username }, type: 'chat', user: 'Info' })
       this.socket.on('message', (data) => {
         const action = JSON.parse(data)

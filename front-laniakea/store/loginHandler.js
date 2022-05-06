@@ -27,8 +27,8 @@ export const actions = {
         .then(res => res.json())
         .then((login) => {
           const auth = {
-            accessToken: login.jwt,
-            username: this.username
+            token: login.jwt,
+            ...login.user
           }
           commit('setAuth', auth)
           Cookie.set('auth', auth)

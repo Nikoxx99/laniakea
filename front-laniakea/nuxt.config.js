@@ -29,7 +29,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/vue-plyr', mode: 'client' }
+    { src: '~/plugins/vue-plyr', mode: 'client' },
+    { src: '~/plugins/socketio', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -45,12 +46,6 @@ export default {
     '@nuxtjs/strapi',
     '@nuxtjs/google-analytics'
   ],
-  strapi: {
-    url: process.env.API_STRAPI_ENDPOINT,
-    key: 'authToken',
-    expires: '7d',
-    entities: ['tickets']
-  },
   googleAnalytics: {
     id: 'G-HLP3TR31KJ'
   },

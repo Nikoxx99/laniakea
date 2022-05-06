@@ -141,18 +141,6 @@ export default {
       ]
     }
   },
-  mounted () {
-    const { io } = require('socket.io-client')
-    const SERVER_URL = 'http://localhost:1337'
-    const socket = io(SERVER_URL, { auth: { username: 'test' } })
-
-    //  wait until socket connects before adding event listeners
-    socket.on('connect', () => {
-      socket.on('message:update', (data) => {
-        console.log(data)
-      })
-    })
-  },
   methods: {
     switchRole (role) {
       this.session.isInitialized = true
