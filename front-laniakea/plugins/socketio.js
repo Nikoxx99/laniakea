@@ -1,8 +1,8 @@
 export default (_, inject) => {
-  inject('createSocket', input => createSocket(input))
+  inject('socket', input => socket(input))
 }
 
-function createSocket (options) {
+function socket (options) {
   const { io } = require('socket.io-client')
   const SERVER_URL = 'http://localhost:1337'
   const socket = io(SERVER_URL, options)

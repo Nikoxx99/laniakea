@@ -13,10 +13,10 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ],
-    script: [
-      { src: '/stars.js', type: 'text/javascript', defer: true, body: true }
     ]
+    // script: [
+    //   { src: '/stars.js', type: 'text/javascript', defer: true, body: true }
+    // ]
   },
 
   publicRuntimeConfig: {

@@ -1,4 +1,5 @@
 import Cookie from 'js-cookie'
+import randomColor from 'randomcolor'
 export const state = () => ({
   auth: []
 })
@@ -28,7 +29,8 @@ export const actions = {
         .then((login) => {
           const auth = {
             token: login.jwt,
-            ...login.user
+            ...login.user,
+            color: randomColor()
           }
           commit('setAuth', auth)
           Cookie.set('auth', auth)

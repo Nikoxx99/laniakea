@@ -1,8 +1,6 @@
 <template>
   <v-container>
     <div class="landscape" />
-    <div class="filter" />
-    <canvas id="canvas" />
     <v-row>
       <v-col
         cols="12"

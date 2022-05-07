@@ -1,3 +1,4 @@
+const randomColor = require('randomcolor')
 module.exports = ({ env }) => ({
   "io": {
     "rooms": {},
@@ -13,16 +14,23 @@ module.exports = ({ env }) => ({
       "events":[
         {
           "name": "connection",
-          "handler": ({ strapi }, socket) => {
-            strapi.log.info(`[io] new connection with id ${socket.id}.`);
-            socket.emit("message:update", {
-              id: socket.id
-            });
+          "handler": (_, socket) => {
+            let users = []
             
             socket.on('joinRoom', (room) => {
+              users.push({
+                id: socket.id,
+                username: socket.handshake.auth.username,
+                title_color: randomColor()
+              });
+
               socket.join(room);
               socket.rooms[socket.id] = room
-              console.log(`[io] ${socket.id} joined ${room}. Rooms: ${JSON.stringify(socket.rooms)}`)
+              socket.to(socket.rooms[socket.id]).emit('newMember', users)
+            })
+
+            socket.on('join', message => {
+              socket.to(socket.rooms[socket.id]).emit('join', message)
             })
           },
         },
