@@ -20,7 +20,8 @@ export default {
   },
 
   publicRuntimeConfig: {
-    API_STRAPI_ENDPOINT: process.env.API_STRAPI_ENDPOINT || 'http://localhost:1337/api/'
+    API_STRAPI_ENDPOINT: process.env.API_STRAPI_ENDPOINT || 'http://localhost:1337/api/',
+    dev: process.env.NODE_ENV !== 'production'
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
