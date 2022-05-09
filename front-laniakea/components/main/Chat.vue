@@ -77,7 +77,7 @@
     </v-card-text>
     <v-card-text
       :class="{ hideMe: visible.inputChat }"
-      style="flex: 0 1 auto;background-color:rgba(0,0,0,0.4);"
+      style="flex: 0 1 auto;background-color:rgba(0,0,0,0.4);boder-radius:20px;"
       @mouseenter="visible.inputChat = false, visible.chat = false, visible.chatItem = false"
       @mouseleave="visible.inputChat = true, visible.chat = true, visible.chatItem = true"
     >
@@ -86,6 +86,7 @@
         :label="$t('chat.chatBox.label')"
         :placeholder="$t('chat.chatBox.placeholder')"
         outlined
+        dense
         hide-details
         autocomplete="off"
         @keydown.enter="sendChat()"
@@ -219,12 +220,12 @@ width: 5px;
 }
 @keyframes cssAnimation {
     to {
-        opacity: 0.1;
+        opacity: 0;
     }
 }
 @-webkit-keyframes cssAnimation {
     to {
-        opacity: 0.1;
+        opacity: 0;
     }
 }
 

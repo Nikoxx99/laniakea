@@ -7,6 +7,7 @@
       <v-container fluid>
         <nuxt />
       </v-container>
+      <MainDebugger v-if="$config.dev" />
     </v-main>
   </v-app>
 </template>

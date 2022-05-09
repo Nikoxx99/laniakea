@@ -11,8 +11,8 @@
         :clickToPlay="true"
         style="--plyr-color-main: #9c27b0;"
         :src="$store.state.sessionHandler.blobURL"
-        @play="$store.state.sessionHandler.role === 'host' ? sendWS('play'): null"
-        @pause="$store.state.sessionHandler.role === 'host' ? sendWS('pause') : null"
+        @play="$store.state.sessionHandler.role === 'host' ? (sendWS('play'), sendWS('seekTo', $event.target.currentTime)) : null"
+        @pause="$store.state.sessionHandler.role === 'host' ? (sendWS('pause'), sendWS('seekTo', $event.target.currentTime)) : null"
         @seeking="$store.state.sessionHandler.role === 'host' ? sendWS('seekTo', $event.target.currentTime) : null"
       />
     </vue-plyr>
@@ -80,10 +80,10 @@ export default {
     },
     setupSocket () {
       this.socket = this.$socket({
-        auth: { token: this.$store.state.auth.token }
+        auth: { token: this.$store.state.auth.token, username: this.$store.state.auth.username }
       })
-      this.socket.emit('joinRoom', this.uniqueid)
-      this.sendWS('join', { message: this.username + ' ' + this.$t('session.newParticipant'), user: this.$store.state.auth }, 'Info')
+      this.socket.emit('joinRoom', this.$store.state.sessionHandler.uniqueid)
+      this.sendWS('join', { message: this.$store.state.auth.username + ' ' + this.$t('session.newParticipant'), user: { username: this.$store.state.auth.username, color: this.$store.state.auth.color } }, 'Info')
 
       this.socket.on('join', (data) => {
         const action = JSON.parse(data)
@@ -111,7 +111,7 @@ export default {
           this.time = time.payload
         }
       })
-      this.chatMessages.unshift({ payload: { message: this.$t('session.welcome') + this.username }, type: 'chat', user: 'Info' })
+      this.chatMessages.unshift({ payload: { message: this.$t('session.welcome') + this.$store.state.auth.username }, type: 'chat', user: 'Info' })
 
       this.socket.on('message', (data) => {
         const action = JSON.parse(data)
@@ -126,8 +126,7 @@ export default {
       this.sendWS('info', 'Video iniciado')
     },
     closeSession () {
-      this.$emit('runningSession', false)
-      this.sendWS('bye', { message: this.username + ' ' + this.$t('session.participantLeft') }, 'Info')
+      this.sendWS('bye', { message: this.$store.state.auth.username + ' ' + this.$t('session.participantLeft') }, 'Info')
       this.socket.disconnect()
       this.started = false
       this.initialized = false
