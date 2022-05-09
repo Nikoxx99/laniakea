@@ -144,6 +144,7 @@ export default {
     },
     sendChat () {
       if (this.chat.message) {
+        this.$dispatch('sendChat', this.chat)
         this.$emit('newChatMessage', this.chat)
         this.chat.message = ''
       }
