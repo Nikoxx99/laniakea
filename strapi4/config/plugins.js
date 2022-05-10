@@ -46,7 +46,7 @@ module.exports = ({ env }) => ({
             })
 
             socket.on('chat', message => {
-              socket.to(socket.rooms[socket.id]).emit('message', message)
+              socket.to(socket.rooms[socket.id]).emit('chat', message)
               isDev ? strapi.log.info(`[chat] ${message}`) : null
             })
 
