@@ -19,6 +19,7 @@
     <MainChat
       :chatmessages="chatMessages"
       :onlineusers="onlineUsers"
+      @chat="chat($event)"
       @closeSession="closeSession()"
     />
   </div>
@@ -66,28 +67,24 @@ export default {
     this.setupSocket()
   },
   methods: {
-    sendWS (type, payload, user) {
-      const msg = {
-        type: null,
-        payload: null,
-        user: null,
-        date: Date.now()
-      }
-      msg.type = type
-      msg.payload = payload
-      msg.user = user
-      this.socket.emit(type, JSON.stringify(msg))
-    },
     setupSocket () {
-      this.socket = this.$socket({
-        auth: { token: this.$store.state.auth.token, username: this.$store.state.auth.username }
-      })
-      this.socket.emit('joinRoom', this.$store.state.sessionHandler.uniqueid)
-      this.sendWS('join', { message: this.$store.state.auth.username + ' ' + this.$t('session.newParticipant'), user: { username: this.$store.state.auth.username, color: this.$store.state.auth.color } }, 'Info')
+      this.socket = this.$socket(this.$store.state.auth).eventHandler()
+      this.$socket(this.$store.state.auth).joinRoom(this.$store.state.sessionHandler.uniqueid)
+      this.chatMessages.unshift({ payload: { message: `${this.$t('session.welcome')} ${this.$store.state.auth.username}`, type: 'chat', user: 'Info' } })
 
+      this.$socket(this.$store.state.auth).join({
+        message: `${this.$store.state.auth.username} ${this.$t('session.newParticipant')}`,
+        user: {
+          username: this.$store.state.auth.username,
+          color: this.$store.state.auth.color
+        }
+      })
+
+      this.setupListeners()
+    },
+    setupListeners () {
       this.socket.on('join', (data) => {
-        const action = JSON.parse(data)
-        this.chatMessages.unshift(action)
+        this.chatMessages.unshift(JSON.parse(data))
       })
       this.socket.on('newMember', (data) => {
         this.onlineUsers = data
@@ -111,19 +108,10 @@ export default {
           this.time = time.payload
         }
       })
-      this.chatMessages.unshift({ payload: { message: this.$t('session.welcome') + this.$store.state.auth.username }, type: 'chat', user: 'Info' })
-
-      this.socket.on('message', (data) => {
-        const action = JSON.parse(data)
-        switch (action.type) {
-          case 'chat':
-            this.chatMessages.unshift(action)
-            break
-          case 'info':
-            break
-        }
+      this.socket.on('chat', (data) => {
+        console.log('[new chat*]', data)
+        this.chatMessages.unshift(data)
       })
-      this.sendWS('info', 'Video iniciado')
     },
     closeSession () {
       this.sendWS('bye', { message: this.$store.state.auth.username + ' ' + this.$t('session.participantLeft') }, 'Info')
@@ -135,6 +123,21 @@ export default {
     },
     generateUniqueId () {
       this.uniqueid = nanoid(6)
+    },
+    chat (data) {
+      this.chatMessages.unshift({ payload: { message: data.message, color: this.$store.state.auth.color }, user: this.$store.state.auth.username })
+    },
+    sendWS (type, payload, user) {
+      const msg = {
+        type: null,
+        payload: null,
+        user: null,
+        date: Date.now()
+      }
+      msg.type = type
+      msg.payload = payload
+      msg.user = user
+      this.socket.emit(type, JSON.stringify(msg))
     }
   }
 }

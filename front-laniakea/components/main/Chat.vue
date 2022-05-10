@@ -18,7 +18,7 @@
               v-on="on"
               @click="copyId"
               @hover="copyStatus = 'copyToClipboard'"
-            >{{ uniqueid }}</strong>
+            >{{ $store.state.sessionHandler.uniqueid }}</strong>
           </template>
           <span>{{ $t(`session.${copyStatus}`) }}</span>
         </v-tooltip>
@@ -41,8 +41,8 @@
         v-model="video"
         color="deep-purple accent-4"
         counter
-        :label="role === 'host' ? $t('host.fileInputTitle') : $t('participant.fileInputTitle')"
-        :placeholder="role === 'host' ? $t('host.fileInputPlaceholder') : $t('participant.fileInputPlaceholder')"
+        :label="$store.state.sessionHandler.role === 'host' ? $t('host.fileInputTitle') : $t('participant.fileInputTitle')"
+        :placeholder="$store.state.sessionHandler.role === 'host' ? $t('host.fileInputPlaceholder') : $t('participant.fileInputPlaceholder')"
         prepend-icon="mdi-paperclip"
         outlined
         :show-size="1000"
@@ -107,14 +107,6 @@ export default {
     onlineusers: {
       type: Array,
       default: () => []
-    },
-    uniqueid: {
-      type: String,
-      default: ''
-    },
-    role: {
-      type: String,
-      default: ''
     }
   },
   data () {
@@ -144,8 +136,8 @@ export default {
     },
     sendChat () {
       if (this.chat.message) {
-        this.$dispatch('sendChat', this.chat)
-        this.$emit('newChatMessage', this.chat)
+        this.$socket(this.$store.state.auth).chat(this.chat)
+        this.$emit('chat', this.chat)
         this.chat.message = ''
       }
     },
@@ -153,7 +145,7 @@ export default {
       this.$emit('updateVideoFile', video)
     },
     copyId () {
-      navigator.clipboard.writeText(this.uniqueid)
+      navigator.clipboard.writeText(this.$store.state.sessionHandler.uniqueid)
       this.copyStatus = 'copiedToClipboard'
     }
   }

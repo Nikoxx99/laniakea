@@ -59,16 +59,15 @@
       </v-card-text>
       <v-card-text>
         <v-btn
-          v-model="initialized"
           elevation="0"
-          :color="started ? 'green darken-4' : 'deep-purple accent-4'"
+          :color="$store.state.sessionHandler.started ? 'green darken-4' : 'deep-purple accent-4'"
           large
           rounded
           x-large
           block
           @click="beginSession()"
         >
-          <v-icon>mdi-broadcast</v-icon> {{ started ? $t('host.btnBeginStarted') : $t('host.btnBegin') }}
+          <v-icon>mdi-broadcast</v-icon> {{ $store.state.sessionHandler.started ? $t('host.btnBeginStarted') : $t('host.btnBegin') }}
         </v-btn>
       </v-card-text>
     </v-card>
@@ -83,45 +82,9 @@
 <script>
 export default {
   name: 'HostView',
-  props: {
-    role: {
-      type: String,
-      default: null
-    },
-    username: {
-      type: String,
-      default: ''
-    }
-  },
   data () {
     return {
-      optionsHost: {
-        controls: ['play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'airplay', 'fullscreen'],
-        fullscreen: {
-          enabled: true,
-          container: '#container'
-        },
-        clickToPlay: false
-      },
-      optionsParticipant: {
-        controls: ['current-time', 'duration', 'mute', 'volume', 'airplay', 'fullscreen'],
-        fullscreen: {
-          enabled: true,
-          container: '#container'
-        },
-        clickToPlay: false,
-        keyboard: false
-      },
-      video: [],
-      initialized: false,
-      started: false,
-      uniqueid: '',
-      blobUrl: '',
-      time: 0,
-      ws: null,
-      socket: null,
-      chatMessages: [],
-      onlineUsers: []
+      video: []
     }
   },
   computed: {
@@ -129,42 +92,9 @@ export default {
       return document.hasFocus()
     }
   },
-  mounted () {
-    window.addEventListener('beforeunload', this.closeSession)
-  },
   methods: {
-    sendWS (type, payload, user) {
-      const msg = {
-        type: null,
-        payload: null,
-        user: null,
-        date: Date.now()
-      }
-      msg.type = type
-      msg.payload = payload
-      msg.user = user
-      this.socket.emit(type, JSON.stringify(msg))
-    },
     beginSession () {
       this.$store.dispatch('sessionHandler/blobURL', window.URL.createObjectURL(this.video))
-    },
-    updateVideoFile (file) {
-      this.blobUrl = ''
-      this.video = file
-      if (this.video) {
-        this.blobUrl = window.URL.createObjectURL(file)
-        this.sendWS('info', 'Video actualizado')
-      }
-    },
-    closeSession () {
-      this.$emit('runningSession', false)
-      this.sendWS('bye', { message: this.username + ' ' + this.$t('session.participantLeft') }, 'Info')
-      this.socket.disconnect()
-      this.started = false
-      this.initialized = false
-      this.uniqueid = ''
-      this.blobUrl = ''
-      this.time = 0
     }
   }
 }

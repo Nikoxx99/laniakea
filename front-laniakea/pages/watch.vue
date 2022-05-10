@@ -11,24 +11,21 @@ export default {
   name: 'Watch',
   data () {
     return {
-      uniqueid: ''
     }
   },
   watch: {
     $route () {
       this.setSessionInformation()
-      this.generateUniqueId()
     }
   },
   mounted () {
     this.setSessionInformation()
-    this.generateUniqueId()
   },
   methods: {
     setSessionInformation () {
       this.$store.dispatch('sessionHandler/setSessionInformation', {
         role: this.$route.query.role,
-        uniqueid: this.generateUniqueId()
+        uniqueid: this.$route.query.role === 'host' ? this.generateUniqueId() : null
       })
       this.$store.commit('sessionHandler/stage')
     },

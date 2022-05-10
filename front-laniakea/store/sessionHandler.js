@@ -40,6 +40,13 @@ export const mutations = {
     } catch (error) {
       throw new Error(`BLOB GENERATION MUTATE ${error}`)
     }
+  },
+  updateUniqueId (state, uniqueid) {
+    try {
+      state.uniqueid = uniqueid
+    } catch (error) {
+      throw new Error(`UNIQUEID UPDATE MUTATE ${error}`)
+    }
   }
 }
 export const actions = {
