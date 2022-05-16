@@ -68,19 +68,21 @@ export default {
   },
   methods: {
     setupSocket () {
-      this.socket = this.$socket(this.$store.state.auth).eventHandler()
-      this.$socket(this.$store.state.auth).joinRoom(this.$store.state.sessionHandler.uniqueid)
-      this.chatMessages.unshift({ payload: { message: `${this.$t('session.welcome')} ${this.$store.state.auth.username}`, type: 'chat', user: 'Info' } })
+      this.socket = this.$socket(this.$store.state.auth)
+      console.log(this.socket, typeof this.socket)
+      // this.socket.eventHandler()
+      // this.socket.joinRoom(this.$store.state.sessionHandler.uniqueid)
+      // this.chatMessages.unshift({ payload: { message: `${this.$t('session.welcome')} ${this.$store.state.auth.username}`, type: 'chat', user: 'Info' } })
 
-      this.$socket(this.$store.state.auth).join({
-        message: `${this.$store.state.auth.username} ${this.$t('session.newParticipant')}`,
-        user: {
-          username: this.$store.state.auth.username,
-          color: this.$store.state.auth.color
-        }
-      })
+      // this.socket.join({
+      //   message: `${this.$store.state.auth.username} ${this.$t('session.newParticipant')}`,
+      //   user: {
+      //     username: this.$store.state.auth.username,
+      //     color: this.$store.state.auth.color
+      //   }
+      // })
 
-      this.setupListeners()
+      // this.setupListeners()
     },
     setupListeners () {
       this.socket.on('join', (data) => {

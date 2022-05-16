@@ -1,4 +1,5 @@
 const randomColor = require('randomcolor')
+let users = []
 module.exports = ({ env }) => ({
   "io": {
     "rooms": {},
@@ -18,7 +19,6 @@ module.exports = ({ env }) => ({
             const isDev = process.env.NODE_ENV === 'development'
             isDev ? strapi.log.info("Socket connection") : null
             isDev ? strapi.log.info(`[Auth] ${JSON.stringify(socket.handshake.auth)}`) : null
-            let users = []
             
             socket.on('joinRoom', (room) => {
               users.push({
